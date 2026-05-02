@@ -43,7 +43,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-32" style={{ background: 'var(--background)' }}>
+    <section id="contact" className="py-32" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8">
         <div className="grid grid-cols-2 gap-0" style={{ borderTop: '1px solid var(--border)' }}>
           {/* Left Half */}

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface Certificate {
@@ -29,12 +29,41 @@ const certificates: Certificate[] = [
 
 const categories = ['All', 'Cloud', 'AI & ML', 'Languages', 'Frontend', 'Mobile', 'Databases', 'DSA', 'Enterprise', 'Engineering'];
 
+const categoryNotes: Record<string, string> = {
+  Cloud: 'Cloud fundamentals and AWS training focused on building and deploying scalable systems.',
+  'AI & ML': 'AI and machine learning credentials covering applied concepts and practical tooling.',
+  Languages: 'Programming language certifications that reinforce core coding fluency and problem solving.',
+  Frontend: 'Frontend learning focused on layout, interaction, and production-ready web interfaces.',
+  Mobile: 'Mobile development training centered on cross-platform app building and delivery.',
+  Databases: 'Database fundamentals and SQL practice for working with structured data confidently.',
+  DSA: 'Data structures and algorithms practice to strengthen technical interview readiness.',
+  Enterprise: 'Enterprise platform training for real-world workflow and service implementations.',
+  Engineering: 'Engineering-focused training from hands-on program work and applied development practice.'
+};
+
 // Stacking Slider Component
 function StackingSlider({ children, cardGap = 20, stackOffset = 20, mobileStackOffset = 0 }: any) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const childrenArray = Array.isArray(children) ? children : [children];
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      setCardWidth(cardRefs.current[0]?.offsetWidth ?? 0);
+      setIsMobile(window.innerWidth < 992);
+    };
+
+    updateDimensions();
+    const timeoutId = window.setTimeout(updateDimensions, 100);
+    window.addEventListener('resize', updateDimensions);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, [childrenArray.length]);
 
   const goToNext = () => {
     if (currentIndex < childrenArray.length - 1) {
@@ -70,6 +99,9 @@ function StackingSlider({ children, cardGap = 20, stackOffset = 20, mobileStackO
           {childrenArray.map((child: any, index: number) => (
             <motion.div
               key={index}
+              ref={(element) => {
+                cardRefs.current[index] = element;
+              }}
               animate={{ x: getCardTransform(index) }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               style={{
@@ -139,11 +171,14 @@ function StackingSlider({ children, cardGap = 20, stackOffset = 20, mobileStackO
 
 export function Achievements() {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 
   const filtered = useMemo(
     () => (activeCategory === 'All' ? certificates : certificates.filter((c) => c.category === activeCategory)),
     [activeCategory]
   );
+
+  const selectedCertificateNote = selectedCertificate ? categoryNotes[selectedCertificate.category] : '';
 
   return (
     <section
@@ -194,6 +229,15 @@ export function Achievements() {
             {filtered.map((cert) => (
               <div
                 key={cert.id}
+                onClick={() => setSelectedCertificate(cert)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setSelectedCertificate(cert);
+                  }
+                }}
                 style={{
                   width: '320px',
                   height: '420px',
@@ -262,6 +306,139 @@ export function Achievements() {
           Showing <span style={{ color: 'var(--text-primary)' }}>{filtered.length}</span> credential{filtered.length !== 1 ? 's' : ''} in {activeCategory === 'All' ? 'all categories' : activeCategory}
         </div>
       </div>
+
+      {selectedCertificate && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedCertificate(null)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 60,
+            background: 'rgba(2, 6, 12, 0.78)',
+            backdropFilter: 'blur(14px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+        >
+          <motion.div
+            initial={{ scale: 0.92, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: 'min(980px, 100%)',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              borderRadius: '28px',
+              border: `1px solid ${selectedCertificate.accent}66`,
+              background: 'linear-gradient(180deg, rgba(14, 22, 34, 0.98) 0%, rgba(8, 12, 18, 0.98) 100%)',
+              boxShadow: `0 30px 80px rgba(0,0,0,0.6), 0 0 50px ${selectedCertificate.accent}22`
+            }}
+          >
+            <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 0.9fr', gap: '0', minHeight: '560px' }}>
+              <div style={{ position: 'relative', background: 'rgba(255,255,255,0.03)' }}>
+                <img
+                  src={selectedCertificate.src}
+                  alt={selectedCertificate.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '560px' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.6) 100%)'
+                  }}
+                />
+                <button
+                  onClick={() => setSelectedCertificate(null)}
+                  aria-label="Close certificate preview"
+                  style={{
+                    position: 'absolute',
+                    top: '18px',
+                    right: '18px',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(10, 14, 20, 0.7)',
+                    color: '#fff',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div style={{ padding: '36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '18px' }}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    width: 'fit-content',
+                    padding: '8px 14px',
+                    borderRadius: '999px',
+                    border: `1px solid ${selectedCertificate.accent}66`,
+                    background: `${selectedCertificate.accent}22`,
+                    color: '#fff',
+                    fontSize: '12px',
+                    fontFamily: 'var(--font-mono)',
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {selectedCertificate.category}
+                </div>
+
+                <div>
+                  <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontSize: '32px', lineHeight: '1.1' }}>
+                    {selectedCertificate.title}
+                  </h3>
+                  <p style={{ marginTop: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', lineHeight: '1.8', fontSize: '15px' }}>
+                    {selectedCertificateNote}
+                  </p>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
+                  <div style={{ padding: '14px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '6px' }}>Certificate</div>
+                    <div style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '15px' }}>{selectedCertificate.title}</div>
+                  </div>
+                  <div style={{ padding: '14px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '6px' }}>Category</div>
+                    <div style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '15px' }}>{selectedCertificate.category}</div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setSelectedCertificate(null)}
+                  style={{
+                    marginTop: '8px',
+                    width: 'fit-content',
+                    padding: '12px 18px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    background: selectedCertificate.accent,
+                    color: '#fff',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '12px',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close Preview
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 }

@@ -59,7 +59,7 @@ export function TechStack() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   return (
-    <section id="stack" className="py-32 relative" style={{ background: 'var(--background)' }}>
+    <section id="stack" className="py-32 relative" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8">
         {/* Section Number Watermark */}
         <div

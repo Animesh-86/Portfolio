@@ -26,7 +26,7 @@ export function About() {
       ref={sectionRef}
       id="about"
       className="py-32 relative"
-      style={{ background: 'var(--background)' }}
+      style={{ background: 'rgba(10, 10, 15, 0.72)' }}
     >
       <div className="max-w-[1440px] mx-auto px-8">
         {/* Section Number Watermark */}

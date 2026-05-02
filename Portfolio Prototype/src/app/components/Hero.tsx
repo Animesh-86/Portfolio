@@ -27,7 +27,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center pt-16" style={{ background: 'var(--background)' }}>
+    <section className="min-h-screen flex items-center pt-16" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8 w-full">
         <div className="grid grid-cols-[55%_45%] gap-12 items-center">
           {/* Left Column */}
