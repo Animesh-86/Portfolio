@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState, useMemo } from 'react';
 
 interface Certificate {
   id: string;
@@ -29,32 +29,14 @@ const certificates: Certificate[] = [
 const categories = ['All', 'Cloud', 'AI & ML', 'Languages', 'Frontend', 'Mobile', 'Databases', 'DSA', 'Enterprise', 'Engineering'];
 
 export function Achievements() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const filtered = useMemo(
-    () => (activeCategory === 'All' ? certificates : certificates.filter((certificate) => certificate.category === activeCategory)),
+    () => (activeCategory === 'All' ? certificates : certificates.filter((c) => c.category === activeCategory)),
     [activeCategory]
   );
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [activeCategory]);
-
-  useEffect(() => {
-    if (selectedIndex >= filtered.length) {
-      setSelectedIndex(0);
-    }
-  }, [filtered.length, selectedIndex]);
-
-  const activeCertificate = filtered[selectedIndex] ?? filtered[0];
-  const handlePrev = () => {
-    setSelectedIndex((currentIndex) => (currentIndex === 0 ? filtered.length - 1 : currentIndex - 1));
-  };
-
-  const handleNext = () => {
-    setSelectedIndex((currentIndex) => (currentIndex + 1) % filtered.length);
-  };
 
   return (
     <section
@@ -64,15 +46,26 @@ export function Achievements() {
       }}
     >
       <style>{`
-        @keyframes certificate-slider-marquee {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(-50%, 0, 0); }
+        @keyframes slide-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes certificate-card-glow {
-          0%, 100% { opacity: 0.35; }
-          50% { opacity: 0.95; }
+        @keyframes float-in {
+          from { opacity: 0; transform: translateY(40px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        .cert-card {
+          animation: float-in 0.6s ease-out backwards;
+        }
+
+        .cert-card:nth-child(1) { animation-delay: 0.05s; }
+        .cert-card:nth-child(2) { animation-delay: 0.1s; }
+        .cert-card:nth-child(3) { animation-delay: 0.15s; }
+        .cert-card:nth-child(4) { animation-delay: 0.2s; }
+        .cert-card:nth-child(5) { animation-delay: 0.25s; }
+        .cert-card:nth-child(6) { animation-delay: 0.3s; }
       `}</style>
 
       <div className="max-w-[1440px] mx-auto px-8 relative z-10">
@@ -81,15 +74,15 @@ export function Achievements() {
         </div>
 
         <div className="text-[10px] mb-12 tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
-          // Recognition
+          // Credentials
         </div>
 
         <div className="mb-16 relative z-10">
           <h2 className="text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-            Certificates in motion<span style={{ color: 'var(--primary)' }}>.</span>
+            Certifications<span style={{ color: 'var(--primary)' }}>.</span>
           </h2>
           <p className="mt-4 text-[14px] max-w-2xl" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-            A Framer-style certificate slider with category filtering and a full-width moving gallery above a spotlight summary.
+            A curated collection of professional credentials spanning cloud infrastructure, AI & machine learning, full-stack development, and more.
           </p>
         </div>
 
@@ -112,201 +105,158 @@ export function Achievements() {
           ))}
         </div>
 
-        <div className="relative z-10 space-y-10">
-          <div className="relative left-1/2 w-screen -translate-x-1/2">
-            <div className="relative min-h-[84vh] overflow-hidden border-y border-[rgba(255,255,255,0.08)] bg-[rgba(7,10,16,0.96)]">
-              <div className="absolute inset-x-0 top-8 flex justify-center pointer-events-none">
-                <div
-                  className="rounded-full border border-[rgba(255,255,255,0.14)] px-5 py-2 text-[11px] tracking-[0.35em] uppercase"
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--text-secondary)',
-                    background: 'rgba(0,0,0,0.28)',
-                    animation: 'certificate-card-glow 4s ease-in-out infinite'
-                  }}
-                >
-                  Certificate slider
-                </div>
-              </div>
-
-              <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_28%,transparent_65%)]" />
-                <div className="absolute inset-y-0 left-0 flex items-center gap-6 px-8" style={{ animation: 'certificate-slider-marquee 28s linear infinite', width: '200%' }}>
-                  {[...filtered, ...filtered].map((certificate, index) => {
-                    const visibleIndex = index % filtered.length;
-                    const isSelected = visibleIndex === selectedIndex;
-                    return (
-                      <button
-                        key={`${certificate.id}-${index}`}
-                        onClick={() => setSelectedIndex(visibleIndex)}
-                        className="group relative shrink-0 overflow-hidden rounded-[24px] border text-left transition-transform duration-300 hover:scale-[1.02]"
-                        style={{
-                          width: 'clamp(17rem, 26vw, 21rem)',
-                          height: 'clamp(11.5rem, 18vw, 14.5rem)',
-                          borderColor: isSelected ? certificate.accent : 'rgba(255,255,255,0.1)',
-                          background: 'rgba(255,255,255,0.05)',
-                          boxShadow: isSelected ? `0 0 0 1px ${certificate.accent}, 0 24px 70px rgba(0,0,0,0.45)` : '0 16px 50px rgba(0,0,0,0.35)'
-                        }}
-                      >
-                        <img src={certificate.src} alt={certificate.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.16)_48%,rgba(0,0,0,0.82)_100%)]" />
-                        <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 pt-4">
-                          <span
-                            className="rounded-full px-3 py-1 text-[10px] tracking-[0.2em] uppercase"
-                            style={{
-                              fontFamily: 'var(--font-mono)',
-                              color: '#ffffff',
-                              background: `${certificate.accent}22`,
-                              border: `1px solid ${certificate.accent}66`
-                            }}
-                          >
-                            {certificate.category}
-                          </span>
-                          <span
-                            className="rounded-full px-3 py-1 text-[10px] tracking-[0.2em] uppercase"
-                            style={{
-                              fontFamily: 'var(--font-mono)',
-                              color: '#ffffff',
-                              background: 'rgba(255,255,255,0.1)',
-                              border: '1px solid rgba(255,255,255,0.08)'
-                            }}
-                          >
-                            {visibleIndex + 1}/{filtered.length}
-                          </span>
-                        </div>
-                        <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                          <h4 className="text-[16px] md:text-[18px] font-semibold leading-tight" style={{ fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                            {certificate.title}
-                          </h4>
-                          <p className="mt-2 text-[11px] tracking-[0.16em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: certificate.accent }}>
-                            Tap to spotlight
-                          </p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="absolute inset-x-0 bottom-0 border-t border-[rgba(255,255,255,0.1)] bg-[rgba(4,8,14,0.72)] px-6 py-5 backdrop-blur-xl">
-                <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                  <div>
-                    <div className="text-[10px] tracking-[0.25em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                      Current spotlight
-                    </div>
-                    <div className="mt-2 text-[22px] md:text-[26px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                      {activeCertificate.title}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.18em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
-                    <span className="rounded-full border border-[rgba(255,255,255,0.15)] px-3 py-2">
-                      {selectedIndex + 1} of {filtered.length}
-                    </span>
-                    <span className="rounded-full border border-[rgba(255,255,255,0.15)] px-3 py-2">
-                      Click cards to rotate focus
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] items-stretch">
-            <div
-              className="rounded-[28px] border p-8 md:p-10 shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 relative z-10">
+          {filtered.map((cert) => (
+            <button
+              key={cert.id}
+              onClick={() => setSelectedCert(cert)}
+              onMouseEnter={() => setHoveredId(cert.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className="cert-card group relative overflow-hidden rounded-[20px] border transition-all duration-500 hover:scale-[1.02] text-left"
               style={{
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)',
-                borderColor: 'rgba(255,255,255,0.12)',
-                backdropFilter: 'blur(24px)'
+                borderColor: hoveredId === cert.id ? cert.accent : 'rgba(255,255,255,0.1)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)',
+                boxShadow: hoveredId === cert.id ? `0 0 24px ${cert.accent}40, inset 0 1px 1px rgba(255,255,255,0.1)` : '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05)'
               }}
             >
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-[11px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--highlight)' }}>
-                    Spotlight
-                  </div>
-                  <div className="mt-2 text-[13px] uppercase tracking-[0.18em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                    {filtered.length} visible certificate{filtered.length !== 1 ? 's' : ''}
-                  </div>
+              <div className="relative h-[240px] overflow-hidden">
+                <img
+                  src={cert.src}
+                  alt={cert.title}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0.6)_60%,rgba(0,0,0,0.8)_100%)] group-hover:opacity-75 transition-opacity duration-300" />
+
+                <div className="absolute top-3 left-3">
+                  <span
+                    className="inline-block rounded-full px-3 py-1 text-[10px] tracking-[0.2em] uppercase font-medium"
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      color: '#ffffff',
+                      background: cert.accent,
+                      opacity: 0.9
+                    }}
+                  >
+                    {cert.category}
+                  </span>
                 </div>
-                <div className="h-3 w-3 rounded-full" style={{ background: activeCertificate?.accent ?? 'var(--primary)', boxShadow: `0 0 18px ${activeCertificate?.accent ?? 'var(--primary)'}` }} />
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
+                  <svg className="w-12 h-12 mb-2" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-white text-[12px] font-medium">View details</p>
+                </div>
               </div>
 
-              <div className="mt-6 rounded-[24px] overflow-hidden border border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.28)]">
-                <img src={activeCertificate.src} alt={activeCertificate.title} className="h-[240px] w-full object-cover" />
-              </div>
-
-              <div className="mt-6 space-y-4">
-                <div className="text-[11px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: activeCertificate.accent }}>
-                  {activeCertificate.category}
-                </div>
-                <h3 className="text-[28px] md:text-[34px] font-semibold leading-[1.1]" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                  {activeCertificate.title}
+              <div className="p-4">
+                <h3 className="text-[16px] font-semibold leading-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+                  {cert.title}
                 </h3>
-                <p className="text-[13px] md:text-[14px] max-w-xl" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-                  Use the slider controls or click any moving certificate to make it the active spotlight.
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="h-1 w-1 rounded-full" style={{ background: cert.accent }} />
+                  <p className="text-[11px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    {cert.category}
+                  </p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="text-[13px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+          Showing <span style={{ color: 'var(--text-primary)' }}>{filtered.length}</span> credential{filtered.length !== 1 ? 's' : ''} in {activeCategory === 'All' ? 'all categories' : activeCategory}
+        </div>
+      </div>
+
+      {selectedCert && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          style={{ background: 'rgba(0,0,0,0.7)' }}
+          onClick={() => setSelectedCert(null)}
+        >
+          <div
+            className="relative bg-[rgba(14,20,32,0.95)] border border-[rgba(255,255,255,0.1)] rounded-[32px] max-w-[600px] w-full max-h-[80vh] overflow-y-auto shadow-[0_32px_128px_rgba(0,0,0,0.6)]"
+            onClick={(e) => e.stopPropagation()}
+            style={{ animation: 'slide-up 0.4s ease-out' }}
+          >
+            <button
+              onClick={() => setSelectedCert(null)}
+              className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-[rgba(255,255,255,0.1)]"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}
+            >
+              ✕
+            </button>
+
+            <div className="relative h-[360px] overflow-hidden rounded-t-[32px]">
+              <img src={selectedCert.src} alt={selectedCert.title} className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.8)_100%)]" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <div className="inline-block rounded-full px-4 py-2 text-[11px] tracking-[0.2em] uppercase font-medium mb-4" style={{ fontFamily: 'var(--font-mono)', color: '#ffffff', background: selectedCert.accent }}>
+                  {selectedCert.category}
+                </div>
+                <h2 className="text-[36px] font-semibold leading-tight" style={{ fontFamily: 'var(--font-display)', color: '#ffffff' }}>
+                  {selectedCert.title}
+                </h2>
+              </div>
+            </div>
+
+            <div className="p-8 space-y-6">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
+                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    Category
+                  </div>
+                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+                    {selectedCert.category}
+                  </div>
+                </div>
+                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
+                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    Status
+                  </div>
+                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--primary)' }}>
+                    Earned
+                  </div>
+                </div>
+                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
+                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    Year
+                  </div>
+                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+                    2024
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[13px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                  About this credential
+                </h3>
+                <p className="text-[14px] leading-relaxed" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>
+                  This certification validates my knowledge and practical expertise in {selectedCert.category.toLowerCase()}. It demonstrates commitment to continuous learning and professional development in this technical domain.
                 </p>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="pt-4 border-t border-[rgba(255,255,255,0.1)]">
                 <button
-                  onClick={handlePrev}
-                  className="px-4 py-2 text-[14px] font-medium transition-all hover:scale-[1.02]"
+                  onClick={() => setSelectedCert(null)}
+                  className="w-full px-6 py-3 rounded-[12px] font-medium transition-all"
                   style={{
                     fontFamily: 'var(--font-body)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    color: 'var(--text-primary)',
-                    borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.04)'
-                  }}
-                >
-                  ← Previous
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="px-4 py-2 text-[14px] font-medium transition-all hover:scale-[1.02]"
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    border: '1px solid var(--primary)',
+                    background: 'var(--primary)',
                     color: '#ffffff',
-                    borderRadius: '999px',
-                    background: 'var(--primary)'
+                    border: '1px solid var(--primary)'
                   }}
                 >
-                  Next →
+                  Close
                 </button>
-              </div>
-            </div>
-
-            <div className="grid gap-3 md:grid-cols-3 self-start">
-              <div className="rounded-[18px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-5">
-                <div className="text-[10px] uppercase tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                  Position
-                </div>
-                <div className="mt-2 text-[20px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                  {selectedIndex + 1}
-                </div>
-              </div>
-              <div className="rounded-[18px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-5">
-                <div className="text-[10px] uppercase tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                  Filter
-                </div>
-                <div className="mt-2 text-[18px] font-semibold truncate" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                  {activeCategory}
-                </div>
-              </div>
-              <div className="rounded-[18px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-5">
-                <div className="text-[10px] uppercase tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                  Total
-                </div>
-                <div className="mt-2 text-[20px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                  {filtered.length}
-                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
