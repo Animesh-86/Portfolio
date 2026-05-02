@@ -1,72 +1,72 @@
-interface RecognitionItem {
-  kind: 'image' | 'pdf';
+import { useState } from 'react';
+
+interface Certificate {
+  id: string;
   title: string;
-  subtitle: string;
-  description: string;
-  href: string;
-  preview?: string;
+  category: string;
+  src: string;
   accent: string;
-  featured?: boolean;
 }
 
-const recognitions: RecognitionItem[] = [
-  {
-    kind: 'image',
-    title: 'AWS Academy Graduate',
-    subtitle: 'Cloud Foundations',
-    description: 'Certificate for foundational cloud architecture and AWS concepts.',
-    href: '/certificates/aws-academy-cloud-foundations.png',
-    preview: '/certificates/aws-academy-cloud-foundations.png',
-    accent: 'var(--primary)',
-    featured: true
-  },
-  {
-    kind: 'image',
-    title: 'IBM AI SkillsBuild',
-    subtitle: 'Artificial Intelligence',
-    description: 'AI fundamentals badge and learning milestone from IBM SkillsBuild.',
-    href: '/certificates/ibm-ai-skillsbuild.png',
-    preview: '/certificates/ibm-ai-skillsbuild.png',
-    accent: 'var(--secondary)'
-  },
-  {
-    kind: 'image',
-    title: 'ServiceNow Micro Certification',
-    subtitle: 'Welcome ServiceNow',
-    description: 'Micro-certification card from the ServiceNow learning track.',
-    href: '/certificates/servicenow-micro-certification.png',
-    preview: '/certificates/servicenow-micro-certification.png',
-    accent: 'var(--highlight)'
-  },
-  {
-    kind: 'pdf',
-    title: 'Python Basic Certificate',
-    subtitle: 'Programming Fundamentals',
-    description: 'PDF certificate for Python basics and core problem-solving foundations.',
-    href: '/certificates/python-basic-certificate.pdf',
-    accent: 'var(--primary)'
-  },
-  {
-    kind: 'image',
-    title: 'Java Certificate',
-    subtitle: 'Language Proficiency',
-    description: 'Java certificate preview from the certificate bundle.',
-    href: '/certificates/java.png',
-    preview: '/certificates/java.png',
-    accent: 'var(--secondary)'
-  },
-  {
-    kind: 'image',
-    title: 'HTML & CSS',
-    subtitle: 'Frontend Basics',
-    description: 'Frontend fundamentals certificate for semantic markup and styling.',
-    href: '/certificates/html-css.jpeg',
-    preview: '/certificates/html-css.jpeg',
-    accent: 'var(--highlight)'
-  }
+const certificates: Certificate[] = [
+  // AWS & Cloud
+  { id: 'aws-1', title: 'AWS Academy Graduate', category: 'Cloud', src: '/certificates/aws-academy-cloud-foundations.png', accent: '#FF9900' },
+  { id: 'aws-2', title: 'AWS Foundations', category: 'Cloud', src: '/certificates/aws.png', accent: '#FF9900' },
+  
+  // IBM & AI
+  { id: 'ibm-1', title: 'IBM AI SkillsBuild', category: 'AI & ML', src: '/certificates/ibm-ai-skillsbuild.png', accent: '#0F62FE' },
+  { id: 'ibm-2', title: 'AI Fundamentals', category: 'AI & ML', src: '/certificates/ai-fundamentals.png', accent: '#0F62FE' },
+  
+  // ServiceNow
+  { id: 'sn-1', title: 'ServiceNow Micro-Cert', category: 'Enterprise', src: '/certificates/servicenow-micro.png', accent: '#00A699' },
+  
+  // HackerRank
+  { id: 'hr-1', title: 'HackerRank Java', category: 'Languages', src: '/certificates/hackerrank-java.png', accent: '#2EC866' },
+  { id: 'hr-2', title: 'HackerRank Python', category: 'Languages', src: '/certificates/hackerrank-python.png', accent: '#2EC866' },
+  
+  // Coursera
+  { id: 'cs-1', title: 'Meta: HTML & CSS', category: 'Frontend', src: '/certificates/html-css-coursera.jpeg', accent: '#1F70C1' },
+  { id: 'cs-2', title: 'Meta: JavaScript', category: 'Frontend', src: '/certificates/javascript-coursera.jpeg', accent: '#1F70C1' },
+  
+  // Udemy
+  { id: 'ud-1', title: 'Flutter Development', category: 'Mobile', src: '/certificates/udemy-flutter.jpg', accent: '#02569B' },
+  { id: 'ud-2', title: 'SQL Fundamentals', category: 'Databases', src: '/certificates/udemy-sql.jpg', accent: '#02569B' },
+  
+  // LeetCode
+  { id: 'lc-1', title: 'LeetCode 50 Days', category: 'DSA', src: '/certificates/leetcode-50days.png', accent: '#FFA726' },
+  { id: 'lc-2', title: 'LeetCode 100 Days', category: 'DSA', src: '/certificates/leetcode-100days.png', accent: '#FFA726' },
+  
+  // Languages
+  { id: 'lang-1', title: 'C Programming', category: 'Languages', src: '/certificates/c.png', accent: '#A8B9CC' },
+  
+  // NxtWave
+  { id: 'nw-1', title: 'NxtWave Training', category: 'Engineering', src: '/certificates/nxtwave.jpeg', accent: '#0066CC' }
 ];
 
+const categories = ['All', 'Cloud', 'AI & ML', 'Languages', 'Frontend', 'Mobile', 'Databases', 'DSA', 'Enterprise', 'Engineering'];
+
 export function Achievements() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  const filtered = activeCategory === 'All' 
+    ? certificates 
+    : certificates.filter(c => c.category === activeCategory);
+
+  const handlePrev = () => {
+    if (selectedIndex !== null) {
+      setSelectedIndex(selectedIndex === 0 ? filtered.length - 1 : selectedIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (selectedIndex !== null) {
+      setSelectedIndex((selectedIndex + 1) % filtered.length);
+    }
+  };
+
+  const currentCert = selectedIndex !== null ? filtered[selectedIndex] : null;
+
   return (
     <section className="py-32 relative" style={{ background: 'var(--background)' }}>
       <div className="max-w-[1440px] mx-auto px-8">
@@ -98,101 +98,133 @@ export function Achievements() {
             className="mt-4 text-[14px] max-w-2xl"
             style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', lineHeight: '1.8' }}
           >
-            Selected proofs of work from the resume bundle. Each card opens the original certificate or document.
+            {filtered.length} certificate{filtered.length !== 1 ? 's' : ''} across cloud, AI, frontend, databases, DSA, and more. Click any certificate to expand.
           </p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-3 gap-4 relative z-10">
-          {recognitions.map((item, index) => (
-            <RecognitionCard key={item.title} item={item} featured={index === 0} />
+        {/* Category Filter */}
+        <div className="mb-12 flex flex-wrap gap-2 relative z-10">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className="px-4 py-2 text-[12px] font-medium transition-all duration-300 tracking-[0.1em] uppercase"
+              style={{
+                fontFamily: 'var(--font-mono)',
+                background: activeCategory === cat ? 'var(--primary)' : 'var(--surface)',
+                border: `1px solid ${activeCategory === cat ? 'var(--primary)' : 'var(--border)'}`,
+                color: activeCategory === cat ? '#ffffff' : 'var(--text-secondary)',
+                borderRadius: '6px'
+              }}
+            >
+              {cat}
+            </button>
           ))}
         </div>
+
+        {/* Certificate Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 relative z-10 mb-8">
+          {filtered.map((cert, idx) => (
+            <div
+              key={cert.id}
+              onClick={() => setSelectedIndex(idx)}
+              className="group cursor-pointer relative overflow-hidden rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                aspectRatio: '1/1'
+              }}
+            >
+              <img
+                src={cert.src}
+                alt={cert.title}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4"
+              >
+                <div className="text-[12px] tracking-[0.1em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: cert.accent }}>
+                  {cert.category}
+                </div>
+                <h4 className="text-[14px] font-semibold mt-1 line-clamp-2" style={{ fontFamily: 'var(--font-body)', color: '#ffffff' }}>
+                  {cert.title}
+                </h4>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal Viewer */}
+        {currentCert && selectedIndex !== null && (
+          <div
+            className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+            onClick={() => setSelectedIndex(null)}
+          >
+            <div
+              className="relative bg-[var(--surface)] border border-[var(--border)] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div
+                className="sticky top-0 flex items-center justify-between p-6 border-b border-[var(--border)]"
+                style={{ background: 'var(--surface)' }}
+              >
+                <div>
+                  <div className="text-[11px] tracking-[0.15em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: currentCert.accent }}>
+                    {currentCert.category}
+                  </div>
+                  <h3 className="text-[24px] font-semibold mt-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+                    {currentCert.title}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setSelectedIndex(null)}
+                  className="text-[24px] transition-colors hover:text-[var(--primary)]"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Image */}
+              <div className="p-6 flex justify-center bg-black/20">
+                <img src={currentCert.src} alt={currentCert.title} className="max-w-full max-h-[60vh] rounded" />
+              </div>
+
+              {/* Navigation */}
+              <div className="flex items-center justify-between p-6 border-t border-[var(--border)]">
+                <button
+                  onClick={handlePrev}
+                  className="px-4 py-2 text-[14px] font-medium transition-all hover:bg-[var(--primary)] hover:text-white"
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text-primary)',
+                    borderRadius: '6px'
+                  }}
+                >
+                  ← Previous
+                </button>
+                <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                  {selectedIndex + 1} of {filtered.length}
+                </div>
+                <button
+                  onClick={handleNext}
+                  className="px-4 py-2 text-[14px] font-medium transition-all hover:bg-[var(--primary)] hover:text-white"
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text-primary)',
+                    borderRadius: '6px'
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
-  );
-}
-
-function RecognitionCard({ item, featured = false }: { item: RecognitionItem; featured?: boolean }) {
-  const cardClassName = featured
-    ? 'col-span-2 p-8 group relative overflow-hidden transition-all duration-300 hover:border-[var(--primary)]'
-    : 'p-6 group relative transition-all duration-300 hover:border-[var(--primary)]';
-
-  return (
-    <a
-      href={item.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={cardClassName}
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)'
-      }}
-    >
-      <div
-        className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: item.accent }}
-      />
-
-      {item.kind === 'image' && item.preview ? (
-        <div className={featured ? 'grid grid-cols-[1.2fr_0.8fr] gap-6 items-center' : 'flex flex-col gap-4'}>
-          <div>
-            <div className="text-[12px] tracking-[0.15em] uppercase mb-3" style={{ fontFamily: 'var(--font-mono)', color: item.accent }}>
-              {featured ? 'Featured Certificate' : 'Certificate'}
-            </div>
-            <h3 className="text-[24px] font-medium mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-              {item.title}
-            </h3>
-            <div className="text-[9px] tracking-wider uppercase mb-4" style={{ fontFamily: 'var(--font-mono)', color: 'var(--highlight)' }}>
-              {item.subtitle}
-            </div>
-            <p className="text-[12px] max-w-md" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)' }}>
-              {item.description}
-            </p>
-            <div className="mt-6 text-[11px] tracking-[0.15em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
-              View certificate ↗
-            </div>
-          </div>
-          <div className={featured ? 'rounded-[14px] overflow-hidden border border-[var(--border)] bg-[rgba(255,255,255,0.02)]' : 'rounded-[12px] overflow-hidden border border-[var(--border)] bg-[rgba(255,255,255,0.02)]'}>
-            <img
-              src={item.preview}
-              alt={item.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="flex h-full min-h-[220px] flex-col justify-between gap-6">
-          <div>
-            <div className="text-[12px] tracking-[0.15em] uppercase mb-3" style={{ fontFamily: 'var(--font-mono)', color: item.accent }}>
-              Document
-            </div>
-            <h3 className="text-[24px] font-medium mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-              {item.title}
-            </h3>
-            <div className="text-[9px] tracking-wider uppercase mb-4" style={{ fontFamily: 'var(--font-mono)', color: 'var(--highlight)' }}>
-              {item.subtitle}
-            </div>
-            <p className="text-[12px] max-w-md" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)' }}>
-              {item.description}
-            </p>
-          </div>
-          <div
-            className="rounded-[14px] p-5 border border-[var(--border)] bg-[rgba(255,255,255,0.02)]"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            <div className="text-[11px] tracking-[0.2em] uppercase mb-2" style={{ fontFamily: 'var(--font-mono)', color: item.accent }}>
-              PDF Certificate
-            </div>
-            <div className="text-[22px] font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-              {item.title}
-            </div>
-            <div className="mt-4 text-[11px] tracking-[0.15em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-              Open document ↗
-            </div>
-          </div>
-        </div>
-      )}
-    </a>
   );
 }
