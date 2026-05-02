@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 
 interface Certificate {
   id: string;
@@ -28,10 +29,116 @@ const certificates: Certificate[] = [
 
 const categories = ['All', 'Cloud', 'AI & ML', 'Languages', 'Frontend', 'Mobile', 'Databases', 'DSA', 'Enterprise', 'Engineering'];
 
+// Stacking Slider Component
+function StackingSlider({ children, cardGap = 20, stackOffset = 20, mobileStackOffset = 0 }: any) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const childrenArray = Array.isArray(children) ? children : [children];
+
+  const goToNext = () => {
+    if (currentIndex < childrenArray.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const goToPrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const activeOffset = isMobile ? mobileStackOffset : stackOffset;
+
+  const getCardTransform = (index: number) => {
+    if (index < currentIndex) {
+      const slideMove = (cardWidth + cardGap - activeOffset) * index;
+      return -slideMove;
+    } else {
+      const slideMove = (cardWidth + cardGap - activeOffset) * currentIndex;
+      return -slideMove;
+    }
+  };
+
+  const isAtStart = currentIndex === 0;
+  const isAtEnd = currentIndex === childrenArray.length - 1;
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ flex: 1, height: '100%', position: 'relative', overflow: 'visible', display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', height: 'fit-content', position: 'relative', gap: `${cardGap}px` }}>
+          {childrenArray.map((child: any, index: number) => (
+            <motion.div
+              key={index}
+              animate={{ x: getCardTransform(index) }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              style={{
+                flexShrink: 0,
+                position: 'relative',
+                zIndex: index + 1
+              }}
+            >
+              {child}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {childrenArray.length > 0 && (
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'flex-start' }}>
+          <button
+            onClick={goToPrev}
+            disabled={isAtStart}
+            style={{
+              width: '40px',
+              height: '40px',
+              background: isAtStart ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '50%',
+              cursor: isAtStart ? 'not-allowed' : 'pointer',
+              opacity: isAtStart ? 0.3 : 1,
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '18px'
+            }}
+          >
+            ←
+          </button>
+          <button
+            onClick={goToNext}
+            disabled={isAtEnd}
+            style={{
+              width: '40px',
+              height: '40px',
+              background: isAtEnd ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '50%',
+              cursor: isAtEnd ? 'not-allowed' : 'pointer',
+              opacity: isAtEnd ? 0.3 : 1,
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '18px'
+            }}
+          >
+            →
+          </button>
+          <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '10px' }}>
+            {currentIndex + 1} of {childrenArray.length}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Achievements() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const filtered = useMemo(
     () => (activeCategory === 'All' ? certificates : certificates.filter((c) => c.category === activeCategory)),
@@ -45,29 +152,6 @@ export function Achievements() {
         background: 'radial-gradient(circle at top, rgba(14, 22, 34, 0.96) 0%, rgba(9, 12, 18, 0.99) 50%, var(--background) 100%)'
       }}
     >
-      <style>{`
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes float-in {
-          from { opacity: 0; transform: translateY(40px) scale(0.95); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .cert-card {
-          animation: float-in 0.6s ease-out backwards;
-        }
-
-        .cert-card:nth-child(1) { animation-delay: 0.05s; }
-        .cert-card:nth-child(2) { animation-delay: 0.1s; }
-        .cert-card:nth-child(3) { animation-delay: 0.15s; }
-        .cert-card:nth-child(4) { animation-delay: 0.2s; }
-        .cert-card:nth-child(5) { animation-delay: 0.25s; }
-        .cert-card:nth-child(6) { animation-delay: 0.3s; }
-      `}</style>
-
       <div className="max-w-[1440px] mx-auto px-8 relative z-10">
         <div className="absolute left-8 top-32 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
           04
@@ -82,7 +166,7 @@ export function Achievements() {
             Certifications<span style={{ color: 'var(--primary)' }}>.</span>
           </h2>
           <p className="mt-4 text-[14px] max-w-2xl" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-            A curated collection of professional credentials spanning cloud infrastructure, AI & machine learning, full-stack development, and more.
+            Stacking slider showcasing professional credentials with smooth card animations.
           </p>
         </div>
 
@@ -105,158 +189,79 @@ export function Achievements() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 relative z-10">
-          {filtered.map((cert) => (
-            <button
-              key={cert.id}
-              onClick={() => setSelectedCert(cert)}
-              onMouseEnter={() => setHoveredId(cert.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              className="cert-card group relative overflow-hidden rounded-[20px] border transition-all duration-500 hover:scale-[1.02] text-left"
-              style={{
-                borderColor: hoveredId === cert.id ? cert.accent : 'rgba(255,255,255,0.1)',
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)',
-                boxShadow: hoveredId === cert.id ? `0 0 24px ${cert.accent}40, inset 0 1px 1px rgba(255,255,255,0.1)` : '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05)'
-              }}
-            >
-              <div className="relative h-[240px] overflow-hidden">
-                <img
-                  src={cert.src}
-                  alt={cert.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0.6)_60%,rgba(0,0,0,0.8)_100%)] group-hover:opacity-75 transition-opacity duration-300" />
-
-                <div className="absolute top-3 left-3">
-                  <span
-                    className="inline-block rounded-full px-3 py-1 text-[10px] tracking-[0.2em] uppercase font-medium"
+        <div style={{ height: '500px', width: '100%', position: 'relative', zIndex: 10 }}>
+          <StackingSlider cardGap={30} stackOffset={40} mobileStackOffset={20}>
+            {filtered.map((cert) => (
+              <div
+                key={cert.id}
+                style={{
+                  width: '320px',
+                  height: '420px',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  border: `2px solid ${cert.accent}`,
+                  background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)`,
+                  boxShadow: `0 0 24px ${cert.accent}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                <div style={{ position: 'relative', height: '100%' }}>
+                  <img
+                    src={cert.src}
+                    alt={cert.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div
                     style={{
-                      fontFamily: 'var(--font-mono)',
-                      color: '#ffffff',
-                      background: cert.accent,
-                      opacity: 0.9
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.8) 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-end',
+                      padding: '20px'
                     }}
                   >
-                    {cert.category}
-                  </span>
-                </div>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[rgba(0,0,0,0.5)] backdrop-blur-sm">
-                  <svg className="w-12 h-12 mb-2" fill="none" stroke="white" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="text-white text-[12px] font-medium">View details</p>
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        background: cert.accent,
+                        color: '#ffffff',
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        marginBottom: '12px',
+                        width: 'fit-content',
+                        fontFamily: 'var(--font-mono)'
+                      }}
+                    >
+                      {cert.category}
+                    </div>
+                    <h3
+                      style={{
+                        color: '#ffffff',
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        fontFamily: 'var(--font-display)',
+                        margin: 0,
+                        lineHeight: '1.3'
+                      }}
+                    >
+                      {cert.title}
+                    </h3>
+                  </div>
                 </div>
               </div>
-
-              <div className="p-4">
-                <h3 className="text-[16px] font-semibold leading-tight" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                  {cert.title}
-                </h3>
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="h-1 w-1 rounded-full" style={{ background: cert.accent }} />
-                  <p className="text-[11px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                    {cert.category}
-                  </p>
-                </div>
-              </div>
-            </button>
-          ))}
+            ))}
+          </StackingSlider>
         </div>
 
-        <div className="text-[13px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+        <div className="mt-8 text-[13px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
           Showing <span style={{ color: 'var(--text-primary)' }}>{filtered.length}</span> credential{filtered.length !== 1 ? 's' : ''} in {activeCategory === 'All' ? 'all categories' : activeCategory}
         </div>
       </div>
-
-      {selectedCert && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-          style={{ background: 'rgba(0,0,0,0.7)' }}
-          onClick={() => setSelectedCert(null)}
-        >
-          <div
-            className="relative bg-[rgba(14,20,32,0.95)] border border-[rgba(255,255,255,0.1)] rounded-[32px] max-w-[600px] w-full max-h-[80vh] overflow-y-auto shadow-[0_32px_128px_rgba(0,0,0,0.6)]"
-            onClick={(e) => e.stopPropagation()}
-            style={{ animation: 'slide-up 0.4s ease-out' }}
-          >
-            <button
-              onClick={() => setSelectedCert(null)}
-              className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-[rgba(255,255,255,0.1)]"
-              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}
-            >
-              ✕
-            </button>
-
-            <div className="relative h-[360px] overflow-hidden rounded-t-[32px]">
-              <img src={selectedCert.src} alt={selectedCert.title} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.8)_100%)]" />
-
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <div className="inline-block rounded-full px-4 py-2 text-[11px] tracking-[0.2em] uppercase font-medium mb-4" style={{ fontFamily: 'var(--font-mono)', color: '#ffffff', background: selectedCert.accent }}>
-                  {selectedCert.category}
-                </div>
-                <h2 className="text-[36px] font-semibold leading-tight" style={{ fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                  {selectedCert.title}
-                </h2>
-              </div>
-            </div>
-
-            <div className="p-8 space-y-6">
-              <div className="grid grid-cols-3 gap-4">
-                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
-                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                    Category
-                  </div>
-                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                    {selectedCert.category}
-                  </div>
-                </div>
-                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
-                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                    Status
-                  </div>
-                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--primary)' }}>
-                    Earned
-                  </div>
-                </div>
-                <div className="rounded-[16px] border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] p-4">
-                  <div className="text-[10px] tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                    Year
-                  </div>
-                  <div className="mt-2 text-[14px] font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-                    2024
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-[13px] tracking-[0.2em] uppercase font-semibold mb-3" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                  About this credential
-                </h3>
-                <p className="text-[14px] leading-relaxed" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>
-                  This certification validates my knowledge and practical expertise in {selectedCert.category.toLowerCase()}. It demonstrates commitment to continuous learning and professional development in this technical domain.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-[rgba(255,255,255,0.1)]">
-                <button
-                  onClick={() => setSelectedCert(null)}
-                  className="w-full px-6 py-3 rounded-[12px] font-medium transition-all"
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    background: 'var(--primary)',
-                    color: '#ffffff',
-                    border: '1px solid var(--primary)'
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
