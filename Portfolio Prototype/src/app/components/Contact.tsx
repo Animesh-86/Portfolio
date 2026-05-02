@@ -68,7 +68,7 @@ export function Contact() {
                   lineHeight: '1.8'
                 }}
               >
-                Available for internships, full-time roles, and collaborations. Placements start June 2026 — but I'm open now.
+                Looking for full-time roles, contract opportunities, or freelance projects. I'm actively seeking teams and clients to build production systems with.
               </p>
 
               {/* Contact Details */}

@@ -70,7 +70,7 @@ export function About() {
                 className="text-[14px] font-light leading-[1.9]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
               >
-                I'm a final-year CSE student at Parul University, graduating in June 2026. I specialize in backend systems engineering, with hands-on experience building <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Spring Boot</span> microservices, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Apache Kafka</span> event streaming platforms, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Redis digital twin</span> architectures.
+                I'm a systems engineer at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Parul University</span>. I specialize in backend systems engineering, with hands-on experience building <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Spring Boot</span> microservices, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Apache Kafka</span> event streaming platforms, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Redis digital twin</span> architectures.
               </p>
               <p
                 className="text-[14px] font-light leading-[1.9]"
@@ -82,7 +82,7 @@ export function About() {
                 className="text-[14px] font-light leading-[1.9]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
               >
-                I'm targeting roles at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Google/Meta/Amazon</span> and similar organizations, with a placement target of 50+ LPA. Campus placements begin <span className="font-medium" style={{ color: 'var(--text-primary)' }}>June 2026</span>, but I'm open to pre-placement opportunities now.
+                I'm open to full-time roles, contract work, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>freelance projects</span>. Looking to build with teams that value distributed systems, clean architecture, and production-grade quality.
               </p>
             </div>
           </div>
@@ -123,7 +123,7 @@ export function About() {
               />
             </div>
 
-            {/* Placement Target Card */}
+            {/* Open to Opportunities */}
             <div
               className="p-6 flex flex-col gap-4"
               style={{
@@ -136,33 +136,26 @@ export function About() {
                   className="text-[12px] tracking-[0.15em] uppercase"
                   style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
                 >
-                  Placement Target
+                  Status
                 </span>
                 <span
                   className="text-[32px] font-bold"
                   style={{ fontFamily: 'var(--font-display)', color: 'var(--highlight)' }}
                 >
-                  50+ LPA
+                  Available
                 </span>
               </div>
 
-              {/* Progress Bar */}
-              <div className="w-full h-1" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <div
-                  className="h-full transition-all duration-1000"
-                  style={{
-                    width: inView ? '30%' : '0%',
-                    background: 'var(--highlight)'
-                  }}
-                />
+              {/* Active Indicator */}
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span
+                  className="text-[11px]"
+                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}
+                >
+                  Open for full-time, contract, freelance
+                </span>
               </div>
-
-              <span
-                className="text-[11px]"
-                style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}
-              >
-                Target: June 2026
-              </span>
             </div>
           </div>
         </div>

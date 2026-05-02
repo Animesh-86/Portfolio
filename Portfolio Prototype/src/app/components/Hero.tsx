@@ -73,7 +73,7 @@ export function Hero() {
                 lineHeight: '1.8'
               }}
             >
-              I build distributed backends, real-time platforms, and event-driven systems. Targeting 50+ LPA. Placements start June 2026.
+              I build distributed backends, real-time platforms, and event-driven systems. Available for full-time roles, contract work, and freelance projects.
             </p>
 
             {/* CTA Buttons */}
