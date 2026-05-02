@@ -141,7 +141,7 @@ export function Hero() {
                   className="text-[11px] ml-2"
                   style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
                 >
-                  axion/telemetry.java
+                  backend/magic.java
                 </span>
               </div>
 
@@ -152,19 +152,18 @@ export function Hero() {
               >
                 <code>
                   <span style={{ color: 'var(--primary)' }}>@Service</span>
-                  {'\n'}<span style={{ color: 'var(--text-secondary)' }}>public class</span> <span style={{ color: 'var(--text-primary)' }}>TelemetryService</span> {'{\n'}
-                  {'\n'}  <span style={{ color: 'var(--secondary)' }}>@KafkaListener</span>(topics = <span style={{ color: 'var(--highlight)' }}>"ev-telemetry"</span>)
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>public void</span> <span style={{ color: 'var(--text-primary)' }}>processTelemetry</span>(<span style={{ color: 'var(--text-primary)' }}>Event event</span>) {'{'}
-                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// Cache digital twin state</span>
-                  {'\n'}    <span style={{ color: 'var(--secondary)' }}>@RedisCache</span>(key = <span style={{ color: 'var(--highlight)' }}>"vehicle:#{'{event.id}'}"</span>)
-                  {'\n'}    digitalTwin.update(event);
+                  {'\n'}<span style={{ color: 'var(--text-secondary)' }}>public class</span> <span style={{ color: 'var(--text-primary)' }}>MyService</span> {'{\n'}
+                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>public void</span> <span style={{ color: 'var(--text-primary)' }}>doMagic</span>(<span style={{ color: 'var(--text-primary)' }}>String input</span>) {'{'}
+                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// Hope nobody calls this in prod</span>
+                  {'\n'}    <span style={{ color: 'var(--secondary)' }}>@RedisCache</span>(key = <span style={{ color: 'var(--highlight)' }}>"pray-it-works"</span>)
+                  {'\n'}    cache.update(input);
                   {'\n'}
-                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// Stream to monitoring</span>
-                  {'\n'}    metricsPublisher.push(event);
+                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// It's not a bug, it's a feature</span>
+                  {'\n'}    logger.info(<span style={{ color: 'var(--highlight)' }}>"Success? Maybe 🤞"</span>);
                   {'\n'}  {'}'}
                   {'\n'}
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>DigitalTwin digitalTwin</span>;
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>MetricsPublisher metricsPublisher</span>;
+                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>Cache cache</span>;
+                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>Logger logger</span>;
                   {'\n'}<span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity`}>{'|'}</span>
                   {'\n'}{'}'}
                 </code>
@@ -195,7 +194,7 @@ export function Hero() {
               }}
             >
               <span className="text-[10px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
-                Kafka · Redis · Spring Boot
+                Redis · Spring Boot · Cache Magic
               </span>
             </div>
           </div>
@@ -205,7 +204,7 @@ export function Hero() {
         <div className="mt-24 pt-12" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="overflow-hidden">
             <div className="flex gap-8 animate-marquee whitespace-nowrap">
-              {['Spring Boot', 'Kafka', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS', 'PostgreSQL', 'React', 'TypeScript', 'Spring Boot', 'Kafka', 'Redis', 'WebRTC', 'Flutter', 'Docker'].map((tech, i) => (
+              {['Spring Boot', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS', 'PostgreSQL', 'React', 'TypeScript', 'gRPC', 'Spring Boot', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS'].map((tech, i) => (
                 <span
                   key={i}
                   className="text-[11px]"
