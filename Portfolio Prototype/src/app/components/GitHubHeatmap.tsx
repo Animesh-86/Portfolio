@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { PatternRevealGrid } from './PatternRevealGrid';
+
 import { motion } from 'framer-motion';
 import { GitBranch, Star, Users, Code2, ExternalLink } from 'lucide-react';
 
@@ -158,7 +158,7 @@ export function GitHubHeatmap({
 
   return (
     <section id="github" className="py-32 relative overflow-hidden" style={{ background: 'var(--background)' }}>
-      <PatternRevealGrid />
+
 
       <div className="max-w-[1440px] mx-auto px-8 relative z-10">
         <div

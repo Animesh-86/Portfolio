@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { PatternRevealGrid } from './PatternRevealGrid';
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -119,81 +120,50 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right Column - Code Card */}
-          <div className="relative">
+          {/* Right Column - Pattern Reveal Card */}
+          <div className="relative h-[480px]">
             <div
-              className="p-6"
+              className="absolute inset-0 overflow-hidden"
               style={{
                 background: 'var(--surface)',
                 border: `1px solid var(--border)`,
-                borderRadius: '12px',
+                borderRadius: '24px',
                 boxShadow: `0 0 40px var(--primary-glow)`
               }}
             >
-              {/* Terminal Header */}
-              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[var(--border)]">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                  <div className="w-3 h-3 rounded-full bg-green-500" />
-                </div>
-                <span
-                  className="text-[11px] ml-2"
-                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-                >
-                  backend/magic.java
-                </span>
-              </div>
-
-              {/* Code Block */}
-              <pre
-                className="text-[13px] leading-relaxed"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                <code>
-                  <span style={{ color: 'var(--primary)' }}>@Service</span>
-                  {'\n'}<span style={{ color: 'var(--text-secondary)' }}>public class</span> <span style={{ color: 'var(--text-primary)' }}>MyService</span> {'{\n'}
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>public void</span> <span style={{ color: 'var(--text-primary)' }}>doMagic</span>(<span style={{ color: 'var(--text-primary)' }}>String input</span>) {'{'}
-                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// Hope nobody calls this in prod</span>
-                  {'\n'}    <span style={{ color: 'var(--secondary)' }}>@RedisCache</span>(key = <span style={{ color: 'var(--highlight)' }}>"pray-it-works"</span>)
-                  {'\n'}    cache.update(input);
-                  {'\n'}
-                  {'\n'}    <span style={{ color: 'var(--text-muted)' }}>// It's not a bug, it's a feature</span>
-                  {'\n'}    logger.info(<span style={{ color: 'var(--highlight)' }}>"Success? Maybe 🤞"</span>);
-                  {'\n'}  {'}'}
-                  {'\n'}
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>Cache cache</span>;
-                  {'\n'}  <span style={{ color: 'var(--text-secondary)' }}>private</span> <span style={{ color: 'var(--text-primary)' }}>Logger logger</span>;
-                  {'\n'}<span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity`}>{'|'}</span>
-                  {'\n'}{'}'}
-                </code>
-              </pre>
+              <PatternRevealGrid />
+              
+              {/* Overlay Gradient for depth */}
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-var(--background) via-transparent to-transparent opacity-40" />
             </div>
 
             {/* Floating Badges */}
             <div
-              className="absolute -bottom-4 -right-4 px-3 py-2 flex items-center gap-2"
+              className="absolute -bottom-6 -right-6 px-4 py-3 flex items-center gap-3 backdrop-blur-md"
               style={{
-                background: 'var(--surface)',
+                background: 'rgba(24, 24, 31, 0.8)',
                 border: '1px solid var(--border)',
-                borderRadius: '6px'
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.4)'
               }}
             >
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[10px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
-                1,000+ events/min
-              </span>
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+              <div className="flex flex-col">
+                <span className="text-[13px] font-medium text-[var(--text-primary)] font-display">1,000+ events/min</span>
+                <span className="text-[9px] text-[var(--text-muted)] uppercase tracking-widest font-mono">Real-time Processing</span>
+              </div>
             </div>
 
             <div
-              className="absolute -top-4 -left-4 px-3 py-2 flex items-center gap-2"
+              className="absolute -top-6 -left-6 px-4 py-3 flex items-center gap-3 backdrop-blur-md"
               style={{
-                background: 'var(--surface)',
+                background: 'rgba(24, 24, 31, 0.8)',
                 border: '1px solid var(--border)',
-                borderRadius: '6px'
+                borderRadius: '12px',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.4)'
               }}
             >
-              <span className="text-[10px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+              <span className="text-[11px] font-medium text-[var(--text-secondary)] font-mono tracking-tight">
                 Redis · Spring Boot · Cache Magic
               </span>
             </div>
