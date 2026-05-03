@@ -68,7 +68,7 @@ export function Contact() {
                   lineHeight: '1.8'
                 }}
               >
-                Looking for full-time roles, contract opportunities, or freelance projects. I'm actively seeking teams and clients to build production systems with.
+                Looking for full-time roles, internship opportunities, or freelance projects. I'm actively seeking teams and clients to build production systems with.
               </p>
 
               {/* Contact Details */}

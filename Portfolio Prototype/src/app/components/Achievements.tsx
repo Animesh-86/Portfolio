@@ -198,11 +198,8 @@ export function Achievements() {
 
         <div className="mb-16 relative z-10">
           <h2 className="text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-            Certifications<span style={{ color: 'var(--primary)' }}>.</span>
+            Certifications and Badges
           </h2>
-          <p className="mt-4 text-[14px] max-w-2xl" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-            Stacking slider showcasing professional credentials with smooth card animations.
-          </p>
         </div>
 
         <div className="mb-12 flex flex-wrap gap-2 relative z-10">

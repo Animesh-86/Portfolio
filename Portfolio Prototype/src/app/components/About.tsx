@@ -54,13 +54,13 @@ export function About() {
                 className="text-[42px] font-medium leading-[1.05] mb-4"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
-                I don't write code. I design systems.
+                I'm a student building systems.
               </h2>
               <p
                 className="text-[24px] font-light"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-secondary)' }}
               >
-                Systems that scale, fail gracefully, and survive production.
+                Learning to build clean, reliable software through projects and practice.
               </p>
             </div>
 
@@ -70,19 +70,23 @@ export function About() {
                 className="text-[14px] font-light leading-[1.9]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
               >
-                I'm a systems engineer at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Parul University</span>. I specialize in backend systems engineering, with hands-on experience building <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Spring Boot</span> microservices, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Apache Kafka</span> event streaming platforms, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Redis digital twin</span> architectures.
+                I'm a B.Tech student at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Parul University</span> with a solid foundation in Java and Spring Boot. I've solved 600+ DSA problems across major platforms and enjoy building backend systems and scalable services.
               </p>
+
+              <div className="text-[14px] font-light leading-[1.9]" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Finalist in Parul University Hackathon, selected from a pool of 2,000+ participants.</li>
+                  <li>Selected for the State-Level Regional at OpenAI Academy × NxtWave × IndiaAI Hackathon.</li>
+                  <li>Selected as one of 100 students university-wide for the ServiceNow CSA & CAD training program.</li>
+                  <li>Selected in GSSoC 2026 for Open Source & AI Agent track.</li>
+                </ul>
+              </div>
+
               <p
                 className="text-[14px] font-light leading-[1.9]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
               >
-                My work ranges from real-time collaborative platforms to EV fleet telemetry systems processing 1000+ events per minute. I've built production systems that handle concurrent users, distributed state, and event-driven workflows.
-              </p>
-              <p
-                className="text-[14px] font-light leading-[1.9]"
-                style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
-              >
-                I'm open to full-time roles, contract work, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>freelance projects</span>. Looking to build with teams that value distributed systems, clean architecture, and production-grade quality.
+                I'm open to full-time roles, internship opportunities, and <span className="font-medium" style={{ color: 'var(--text-primary)' }}>freelance projects</span>. Looking to build with teams that value distributed systems, clean architecture, and production-grade quality.
               </p>
             </div>
           </div>
@@ -107,7 +111,7 @@ export function About() {
                 smaller
               />
               <StatCard
-                value="400+"
+                  value="600+"
                 label="DSA Problems Solved"
                 color="var(--highlight)"
                 inView={inView}
@@ -153,7 +157,7 @@ export function About() {
                   className="text-[11px]"
                   style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}
                 >
-                  Open for full-time, contract, freelance
+                  Open for full-time, internship, freelance
                 </span>
               </div>
             </div>

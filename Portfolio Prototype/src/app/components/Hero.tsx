@@ -73,7 +73,7 @@ export function Hero() {
                 lineHeight: '1.8'
               }}
             >
-              I build distributed backends, real-time platforms, and event-driven systems. Available for full-time roles, contract work, and freelance projects.
+              I build distributed backends, real-time platforms, and event-driven systems. Available for full-time roles, internships, and freelance projects.
             </p>
 
             {/* CTA Buttons */}

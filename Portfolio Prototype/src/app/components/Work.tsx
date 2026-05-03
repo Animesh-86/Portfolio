@@ -101,7 +101,7 @@ export function Work() {
             className="text-[48px] font-medium"
             style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
           >
-            Systems I've Built
+            Projects I've Built
           </h2>
 
           {/* Filter Tabs */}
