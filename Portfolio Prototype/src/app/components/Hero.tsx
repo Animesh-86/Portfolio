@@ -5,10 +5,10 @@ export function Hero() {
   const [showCursor, setShowCursor] = useState(true);
 
   const roles = [
-    'Backend Engineer.',
-    'System Designer.',
-    'Building for FAANG.',
-    'Distributed Systems.'
+    'Full Stack Developer.',
+    'AI/ML Enthusiast.',
+    'Backend Developer.',
+    'Open Source Contributor.'
   ];
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function Hero() {
               className="text-[11px] tracking-[0.25em] uppercase"
               style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}
             >
-              SYSTEMS ENGINEER · PARUL UNIVERSITY · 2026
+              FULL STACK DEVELOPER · AI/ML ENTHUSIAST
             </div>
 
             {/* Name */}

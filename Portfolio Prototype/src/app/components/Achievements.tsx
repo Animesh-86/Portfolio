@@ -187,8 +187,8 @@ export function Achievements() {
         background: 'radial-gradient(circle at top, rgba(14, 22, 34, 0.96) 0%, rgba(9, 12, 18, 0.99) 50%, var(--background) 100%)'
       }}
     >
-      <div className="max-w-[1440px] mx-auto px-8 relative z-10">
-        <div className="absolute left-8 top-32 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
+      <div className="max-w-[1440px] mx-auto px-8 relative">
+        <div className="absolute left-8 top-16 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
           04
         </div>
 
