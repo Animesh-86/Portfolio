@@ -1,24 +1,38 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import Home from './pages/Home';
 import ProjectCaseStudy from './pages/ProjectCaseStudy';
 
+function resetScrollPosition() {
+  const root = document.documentElement;
+  const previousScrollBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, 0);
+  root.scrollTop = 0;
+  document.body.scrollTop = 0;
+  root.style.scrollBehavior = previousScrollBehavior;
+}
+
 function ScrollToTop() {
-  const { pathname, hash } = useLocation();
-  useEffect(() => {
-    if (!hash) {
-      window.scrollTo(0, 0);
-    } else {
-      const element = document.getElementById(hash.replace('#', ''));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [pathname, hash]);
+  const { pathname } = useLocation();
+  useLayoutEffect(() => {
+    requestAnimationFrame(resetScrollPosition);
+  }, [pathname]);
   return null;
 }
 
 export default function App() {
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      const { scrollRestoration } = window.history;
+      window.history.scrollRestoration = 'manual';
+      return () => {
+        window.history.scrollRestoration = scrollRestoration;
+      };
+    }
+    return undefined;
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />

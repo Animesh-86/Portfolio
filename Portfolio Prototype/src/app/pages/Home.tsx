@@ -21,14 +21,30 @@ export default function Home() {
       touchMultiplier: 2,
     });
 
+    let animationFrameId = 0;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      animationFrameId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    animationFrameId = requestAnimationFrame(raf);
+
+    // Check if we should scroll to the work section (returning from a project)
+    const shouldReturnToWork = sessionStorage.getItem('return_to_work');
+    if (shouldReturnToWork) {
+      sessionStorage.removeItem('return_to_work');
+      // Small timeout to allow Lenis to initialize and content to render
+      setTimeout(() => {
+        const workSection = document.getElementById('work');
+        if (workSection) {
+          lenis.scrollTo(workSection, { offset: -100, duration: 1.5 });
+        }
+      }, 100);
+    }
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       lenis.destroy();
     };
   }, []);

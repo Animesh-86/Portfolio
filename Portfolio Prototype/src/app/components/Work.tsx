@@ -135,6 +135,16 @@ export function Work() {
   const [filter, setFilter] = useState<FilterType>('All');
   const navigate = useNavigate();
 
+  const resetScrollPosition = () => {
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.scrollTop = 0;
+    document.body.scrollTop = 0;
+    root.style.scrollBehavior = previousScrollBehavior;
+  };
+
   const filteredProjects = projects.filter((p) => p.category.includes(filter));
   const featuredProjects = filteredProjects.filter((p) => p.isFeatured);
   const archiveProjects = filteredProjects.filter((p) => !p.isFeatured);
@@ -142,6 +152,7 @@ export function Work() {
   const handleProjectClick = (projectId: string) => {
     // Only navigate for projects that have case studies (01, 04, 05, 09)
     if (['01', '04', '05', '09'].includes(projectId)) {
+      resetScrollPosition();
       navigate(`/project/${projectId}`);
     }
   };

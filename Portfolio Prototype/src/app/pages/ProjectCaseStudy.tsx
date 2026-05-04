@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Github, ExternalLink, Code2, Cpu, Activity, Server } from 'lucide-react';
@@ -92,12 +92,14 @@ export default function ProjectCaseStudy() {
   const navigate = useNavigate();
   const project = caseStudies[id || ''];
 
-  useEffect(() => {
-    // Slight delay to ensure any browser auto-focus on bottom elements is overridden
-    const timer = setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 10);
-    return () => clearTimeout(timer);
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.scrollTop = 0;
+    document.body.scrollTop = 0;
+    root.style.scrollBehavior = previousScrollBehavior;
   }, []);
 
   if (!project) {
@@ -118,7 +120,10 @@ export default function ProjectCaseStudy() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 p-6 flex items-center justify-between bg-[#050507]/50 backdrop-blur-xl border-b border-white/5">
         <button 
-          onClick={() => navigate('/#work')}
+          onClick={() => {
+            sessionStorage.setItem('return_to_work', 'true');
+            navigate('/');
+          }}
           className="flex items-center gap-2 text-sm font-mono text-white/60 hover:text-white transition-colors group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
