@@ -1,34 +1,31 @@
-import { AuraNightSkyBackground } from './components/AuraNightSkyBackground';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { About } from './components/About';
-import { Work } from './components/Work';
-import { TechStack } from './components/TechStack';
-import { GitHubHeatmap } from './components/GitHubHeatmap';
-import { Achievements } from './components/Achievements';
-import { Contact } from './components/Contact';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import Home from './pages/Home';
+import ProjectCaseStudy from './pages/ProjectCaseStudy';
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    } else {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [pathname, hash]);
+  return null;
+}
 
 export default function App() {
   return (
-    <div
-      className="min-h-screen relative isolate"
-      style={{
-        background: 'var(--background)',
-        color: 'var(--text-primary)',
-        fontFamily: 'var(--font-body)'
-      }}
-    >
-      <AuraNightSkyBackground />
-      <div className="relative z-10">
-      <Navbar />
-      <Hero />
-      <About />
-      <Work />
-      <TechStack />
-      <GitHubHeatmap username="Animesh-86" />
-      <Achievements />
-      <Contact />
-      </div>
-    </div>
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/project/:id" element={<ProjectCaseStudy />} />
+      </Routes>
+    </Router>
   );
 }

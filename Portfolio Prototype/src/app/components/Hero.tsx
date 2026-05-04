@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { PatternRevealGrid } from './PatternRevealGrid';
+import { MagneticButton } from './MagneticButton';
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -79,7 +80,7 @@ export function Hero() {
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-4 mt-2">
-              <button
+              <MagneticButton
                 className="px-6 py-3 text-[14px] font-medium transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] group"
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -91,9 +92,9 @@ export function Hero() {
                   View Work
                   <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
                 </span>
-              </button>
+              </MagneticButton>
 
-              <button
+              <MagneticButton
                 className="px-6 py-3 text-[14px] font-medium transition-all hover:bg-[rgba(255,255,255,0.04)]"
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -102,7 +103,7 @@ export function Hero() {
                 }}
               >
                 Get in Touch
-              </button>
+              </MagneticButton>
             </div>
 
             {/* Social Icons */}

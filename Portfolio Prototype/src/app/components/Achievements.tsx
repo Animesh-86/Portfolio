@@ -187,10 +187,11 @@ export function Achievements() {
         background: 'radial-gradient(circle at top, rgba(14, 22, 34, 0.96) 0%, rgba(9, 12, 18, 0.99) 50%, var(--background) 100%)'
       }}
     >
+      <div className="absolute left-8 top-16 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
+        05
+      </div>
+
       <div className="max-w-[1440px] mx-auto px-8 relative">
-        <div className="absolute left-8 top-16 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
-          04
-        </div>
 
         <div className="text-[10px] mb-12 tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
           // Credentials
@@ -251,6 +252,7 @@ export function Achievements() {
                   <img
                     src={cert.src}
                     alt={cert.title}
+                    loading="lazy"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div
@@ -342,6 +344,7 @@ export function Achievements() {
                 <img
                   src={selectedCertificate.src}
                   alt={selectedCertificate.title}
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '560px' }}
                 />
                 <div

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { MagneticButton } from './MagneticButton';
+import { trackEvent } from '../utils/analytics';
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -75,7 +77,8 @@ export function Navbar() {
             </span>
           </div>
 
-          <button
+          <MagneticButton
+            onClick={() => trackEvent('resume_download_click', { location: 'navbar' })}
             className="px-4 py-2 text-[13px] font-medium transition-all hover:bg-[rgba(255,255,255,0.04)]"
             style={{
               fontFamily: 'var(--font-body)',
@@ -84,7 +87,7 @@ export function Navbar() {
             }}
           >
             Download CV
-          </button>
+          </MagneticButton>
         </div>
       </div>
     </nav>

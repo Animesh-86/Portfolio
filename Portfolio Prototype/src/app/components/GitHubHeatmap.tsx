@@ -159,14 +159,14 @@ export function GitHubHeatmap({
   return (
     <section id="github" className="py-32 relative overflow-hidden" style={{ background: 'var(--background)' }}>
 
+      <div
+        className="absolute left-8 -top-12 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none"
+        style={{ fontFamily: 'var(--font-display)' }}
+      >
+        04
+      </div>
 
       <div className="max-w-[1440px] mx-auto px-8 relative z-10">
-        <div
-          className="absolute left-8 -top-12 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          03
-        </div>
 
         <div
           className="text-[10px] mb-12 tracking-[0.2em]"

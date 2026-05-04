@@ -15,7 +15,7 @@ const SEQUENTIAL_SYMBOLS = [
   { id: 'braces', type: 'icon', value: Braces, scale: 1.7 },
   { id: 'js', type: 'text', value: 'JS', size: '140px' },
   { id: 'terminal', type: 'icon', value: Terminal, scale: 1.4 },
-  { id: 'service', type: 'text', value: '@SERVICE', size: '70px' },
+  { id: 'api', type: 'text', value: 'API', size: '140px' },
 ];
 
 export function PatternRevealGrid() {

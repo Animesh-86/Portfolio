@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ExternalLink, Github } from 'lucide-react';
 
-type FilterType = 'All' | 'Backend' | 'Mobile' | 'Open Source';
+type FilterType = 'All' | 'Full Stack' | 'Mobile' | 'Open Source' | 'Hackathon' | 'Freelance' | 'Group Project' | 'Library';
 
 interface Project {
   id: string;
-  number: string;
   year: string;
   name: string;
   subtitle: string;
@@ -12,101 +13,157 @@ interface Project {
   tags: string[];
   badge?: { text: string; color: string };
   category: FilterType[];
+  isFeatured?: boolean;
 }
 
 const projects: Project[] = [
+  // FEATURED PROJECTS
   {
-    id: '01',
-    number: '01',
-    year: '2026',
-    name: 'Axion',
-    subtitle: 'EV FLEET TELEMETRY & OTA',
-    description: 'Real-time telemetry system for electric vehicle fleets with digital twin architecture. Processes 1000+ events/min using Kafka streams, Redis caching, and Spring Boot microservices. Includes OTA update pipeline and fleet monitoring dashboard.',
-    tags: ['Spring Boot', 'Kafka', 'Redis', 'Python', 'Digital Twin'],
-    badge: { text: 'Featured', color: 'var(--primary)' },
-    category: ['All', 'Backend']
-  },
-  {
-    id: '02',
-    number: '02',
+    id: '04',
     year: '2025',
     name: 'Parallax',
     subtitle: 'COLLABORATIVE CODE EDITOR',
-    description: 'Real-time collaborative code editor with multi-cursor support, live syntax highlighting, and peer-to-peer video calling. Built with WebSocket synchronization and WebRTC for low-latency communication.',
-    tags: ['React', 'Spring Boot', 'WebSocket', 'WebRTC', 'TypeScript'],
-    category: ['All', 'Backend']
+    description: 'Real-time collaborative code editor with multi-cursor support, live syntax highlighting, and peer-to-peer video calling built with WebSocket synchronization and WebRTC.',
+    tags: ['React', 'Spring Boot', 'WebRTC'],
+    category: ['All', 'Full Stack'],
+    isFeatured: true
   },
   {
-    id: '03',
-    number: '03',
-    year: '2025',
-    name: 'POS System',
-    subtitle: 'COMMERCIAL POINT-OF-SALE',
-    description: 'Full-featured point-of-sale system for retail businesses with inventory management, sales analytics, and receipt printing. Serverless architecture with Firebase backend for real-time sync.',
-    tags: ['Flutter', 'Firebase', 'Dart', 'Serverless'],
-    badge: { text: 'Freelance', color: 'var(--highlight)' },
-    category: ['All', 'Mobile']
+    id: '01',
+    year: '2026',
+    name: 'Axion',
+    subtitle: 'EV FLEET TELEMETRY & OTA',
+    description: 'Real-time telemetry system for electric vehicle fleets with digital twin architecture. Processes 1000+ events/min using Kafka streams, Redis caching, and Spring Boot microservices.',
+    tags: ['Spring Boot', 'Kafka', 'Redis', 'React'],
+    badge: { text: 'Featured', color: 'var(--primary)' },
+    category: ['All', 'Full Stack'],
+    isFeatured: true
   },
   {
-    id: '04',
-    number: '04',
+    id: '09',
     year: '2024',
     name: 'JSON Parser Library',
     subtitle: 'ZERO-DEPENDENCY JAVA ENGINE',
-    description: 'Lightweight JSON parsing library built from scratch in Java with custom lexer and parser. Zero external dependencies, full JSON spec compliance, and comprehensive test coverage.',
-    tags: ['Java', 'JUnit', 'Lexer'],
-    badge: { text: 'Open Source', color: 'var(--secondary)' },
-    category: ['All', 'Backend', 'Open Source']
+    description: 'Lightweight JSON parsing library built individually from scratch in Java with a custom lexer.',
+    tags: ['Java', 'Lexer'],
+    badge: { text: 'Individual', color: 'var(--primary)' },
+    category: ['All', 'Library'],
+    isFeatured: true
   },
   {
     id: '05',
-    number: '05',
+    year: '2025',
+    name: 'BiteBox POS System',
+    subtitle: 'COMMERCIAL POINT-OF-SALE',
+    description: 'Full-featured point-of-sale freelance project for retail businesses with inventory management.',
+    tags: ['Flutter', 'Firebase'],
+    badge: { text: 'Freelance', color: 'var(--highlight)' },
+    category: ['All', 'Mobile', 'Freelance'],
+    isFeatured: true
+  },
+  // ARCHIVE PROJECTS
+  {
+    id: '02',
+    year: '2026',
+    name: 'DataTrust Engine',
+    subtitle: 'UNIFIED DATA TRUST SCORES',
+    description: 'Standalone observability tool built during the WeMakeDev Metadata Hackathon. Connects to OpenMetadata to compute a 0-100 Trust Score for data assets by aggregating health signals.',
+    tags: ['OpenMetadata', 'Python', 'React'],
+    badge: { text: 'Hackathon Winner', color: 'var(--secondary)' },
+    category: ['All', 'Hackathon', 'Full Stack']
+  },
+  {
+    id: '03',
+    year: '2026',
+    name: 'Studio JSON Schema',
+    subtitle: 'SCHEMA ORGANIZATION ARCHITECTURE',
+    description: 'Open source contribution focused on JSON schema organization. Designed architectural improvements and tooling suggestions for managing complex, nested schema definitions efficiently.',
+    tags: ['JSON Schema', 'Open Source', 'Architecture'],
+    badge: { text: 'Open Source', color: 'var(--highlight)' },
+    category: ['All', 'Open Source']
+  },
+  {
+    id: '06',
+    year: '2025',
+    name: 'Around Me',
+    subtitle: 'LOCATION DISCOVERY APP',
+    description: 'Intelligent location discovery application built during the OpenAI Academy NxtWave Hackathon.',
+    tags: ['OpenAI', 'React'],
+    badge: { text: 'Hackathon', color: 'var(--secondary)' },
+    category: ['All', 'Hackathon', 'Full Stack']
+  },
+  {
+    id: '07',
+    year: '2025',
+    name: 'Pantsir SHORAD',
+    subtitle: 'DEFENSE SIMULATION SYSTEM',
+    description: 'A comprehensive group project focusing on simulating short-range air defense mechanics.',
+    tags: ['Simulation', 'Algorithms'],
+    badge: { text: 'Group Project', color: '#8b5cf6' },
+    category: ['All', 'Group Project']
+  },
+  {
+    id: '08',
     year: '2024',
     name: 'Expenzo',
     subtitle: 'PERSONAL FINANCE TRACKER',
-    description: 'Mobile-first personal finance tracker with expense categorization, budget planning, and spending analytics. Real-time cloud sync with Firebase and beautiful data visualizations.',
-    tags: ['Flutter', 'Firebase', 'Dart'],
+    description: 'Mobile-first personal finance tracker with expense categorization and budget planning.',
+    tags: ['Flutter', 'Firebase'],
     category: ['All', 'Mobile']
+  },
+  {
+    id: '10',
+    year: '2024',
+    name: 'Blog App',
+    subtitle: 'FULL STACK CONTENT PLATFORM',
+    description: 'A fully featured blogging platform built completely independently with Python and Django.',
+    tags: ['Python', 'Django'],
+    category: ['All', 'Full Stack']
+  },
+  {
+    id: '11',
+    year: '2023',
+    name: 'Amazon Clone',
+    subtitle: 'E-COMMERCE UI REPLICA',
+    description: 'A responsive Amazon.in homepage replica built completely from scratch.',
+    tags: ['HTML5', 'CSS3'],
+    category: ['All', 'Full Stack']
   }
 ];
 
 export function Work() {
   const [filter, setFilter] = useState<FilterType>('All');
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const filteredProjects = projects.filter((p) => p.category.includes(filter));
+  const featuredProjects = filteredProjects.filter((p) => p.isFeatured);
+  const archiveProjects = filteredProjects.filter((p) => !p.isFeatured);
+
+  const handleProjectClick = (projectId: string) => {
+    // Only navigate for projects that have case studies (01, 04, 05, 09)
+    if (['01', '04', '05', '09'].includes(projectId)) {
+      navigate(`/project/${projectId}`);
+    }
+  };
 
   return (
     <section id="work" className="py-32 relative" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8">
-        {/* Section Number Watermark */}
-        <div
-          className="absolute left-8 top-32 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
+        <div className="absolute left-8 top-32 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
           02
         </div>
 
-        {/* Section Tag */}
-        <div
-          className="text-[10px] mb-12 tracking-[0.2em]"
-          style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}
-        >
+        <div className="text-[10px] mb-12 tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
           // Selected Work
         </div>
 
-        {/* Header Row */}
-        <div className="flex items-end justify-between mb-16 relative z-10">
-          <h2
-            className="text-[48px] font-medium"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
-          >
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 relative z-10 gap-6">
+          <h2 className="text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
             Projects I've Built
           </h2>
 
-          {/* Filter Tabs */}
-          <div className="flex items-center gap-2">
-            {(['All', 'Backend', 'Mobile', 'Open Source'] as FilterType[]).map((tab) => (
+          <div className="flex flex-wrap items-center gap-2">
+            {(['All', 'Full Stack', 'Mobile', 'Open Source', 'Hackathon', 'Freelance', 'Group Project', 'Library'] as FilterType[]).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
@@ -125,142 +182,119 @@ export function Work() {
           </div>
         </div>
 
-        {/* Project List */}
-        <div className="relative z-10">
-          {filteredProjects.map((project, index) => (
-            <div key={project.id}>
-              <ProjectRow
-                project={project}
-                isExpanded={expandedId === project.id}
-                onToggle={() => setExpandedId(expandedId === project.id ? null : project.id)}
+        {featuredProjects.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10 mb-20">
+            {featuredProjects.map((project) => (
+              <FeaturedCard 
+                key={project.id} 
+                project={project} 
+                onClick={() => handleProjectClick(project.id)}
               />
-              {index < filteredProjects.length - 1 && (
-                <div style={{ height: '1px', background: 'var(--border)' }} />
-              )}
+            ))}
+          </div>
+        )}
+
+        {archiveProjects.length > 0 && (
+          <div className="relative z-10 mt-12">
+            <h3 className="text-[24px] font-medium mb-8" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+              Other Notable Projects
+            </h3>
+            
+            <div className="flex flex-col">
+              <div className="hidden md:grid grid-cols-[80px_2fr_1fr_2fr] gap-4 px-6 py-4 border-b border-[var(--border)] text-[10px] uppercase tracking-wider font-mono text-[var(--text-muted)]">
+                <span>Year</span>
+                <span>Project</span>
+                <span>Built At</span>
+                <span>Tech Stack</span>
+              </div>
+              
+              {archiveProjects.map((project) => (
+                <div 
+                  key={project.id} 
+                  className={`grid grid-cols-1 md:grid-cols-[80px_2fr_1fr_2fr] gap-2 md:gap-4 px-6 py-6 border-b border-[var(--border)] hover:bg-[rgba(255,255,255,0.02)] transition-colors group ${['01', '04', '05', '09'].includes(project.id) ? 'cursor-pointer' : 'cursor-default'}`}
+                  onClick={() => handleProjectClick(project.id)}
+                >
+                  <div className="text-[12px] font-mono text-[var(--text-secondary)] md:py-1">
+                    {project.year}
+                  </div>
+                  
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[16px] font-medium text-[var(--text-primary)] font-display group-hover:text-[var(--primary)] transition-colors">
+                      {project.name}
+                    </span>
+                    <span className="text-[10px] font-mono text-[var(--text-muted)] md:hidden">
+                      {project.badge?.text || 'Individual'}
+                    </span>
+                  </div>
+                  
+                  <div className="hidden md:flex items-start py-1">
+                    <span className="text-[12px] text-[var(--text-secondary)]">
+                      {project.badge?.text || 'Individual'}
+                    </span>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 items-start py-1">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="text-[11px] font-mono text-[var(--text-muted)] bg-[rgba(255,255,255,0.03)] px-2 py-0.5 rounded">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-function ProjectRow({
-  project,
-  isExpanded,
-  onToggle
-}: {
-  project: Project;
-  isExpanded: boolean;
-  onToggle: () => void;
-}) {
+function FeaturedCard({ project, onClick }: { project: Project; onClick: () => void }) {
   return (
-    <div
-      className="grid grid-cols-[80px_1fr_120px] gap-8 py-8 px-6 -mx-6 cursor-pointer transition-all duration-300 group relative"
-      style={{
-        background: isExpanded ? 'var(--surface)' : 'transparent'
-      }}
-      onClick={onToggle}
+    <div 
+      onClick={onClick}
+      className="flex flex-col justify-between p-8 rounded-2xl border border-[var(--border)] bg-[rgba(17,17,24,0.4)] backdrop-blur-sm hover:border-[var(--primary)] transition-all duration-300 group relative overflow-hidden h-full min-h-[320px] cursor-pointer"
     >
-      {/* Left Border on Hover */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-[2px] transition-all duration-300"
-        style={{
-          background: 'var(--primary)',
-          opacity: isExpanded ? 1 : 0
-        }}
+      <div 
+        className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
+        style={{ background: `radial-gradient(circle at top right, ${project.badge?.color || 'var(--primary)'}, transparent 60%)` }}
       />
 
-      {/* Column 1: Number & Year */}
-      <div className="flex flex-col gap-1">
-        <span
-          className="text-[11px]"
-          style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-        >
-          {project.number}
-        </span>
-        <span
-          className="text-[9px]"
-          style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-        >
-          {project.year}
-        </span>
-      </div>
-
-      {/* Column 2: Content */}
-      <div className="flex flex-col gap-3">
-        <div>
-          <h3
-            className="text-[24px] font-medium mb-1"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
-          >
-            {project.name}
-          </h3>
-          <div
-            className="text-[9px] tracking-[0.15em] uppercase mb-2"
-            style={{ fontFamily: 'var(--font-mono)', color: 'var(--secondary)' }}
-          >
-            {project.subtitle}
+      <div className="relative z-10 flex flex-col gap-4">
+        <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] font-mono text-[var(--secondary)] tracking-widest uppercase">
+              {project.subtitle}
+            </span>
+            <h3 className="text-[28px] font-medium font-display text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
+              {project.name}
+            </h3>
+          </div>
+          <div className="flex gap-2">
+            <a href="#" onClick={(e) => e.stopPropagation()} className="p-2 rounded-full bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.08)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><Github size={16} /></a>
+            <a href="#" onClick={(e) => e.stopPropagation()} className="p-2 rounded-full bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.08)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><ExternalLink size={16} /></a>
           </div>
         </div>
-
-        {/* Description */}
-        <p
-          className="text-[12px] font-light transition-all duration-300 overflow-hidden"
-          style={{
-            fontFamily: 'var(--font-body)',
-            color: 'var(--text-secondary)',
-            lineHeight: '1.85',
-            maxHeight: isExpanded ? '500px' : '48px'
-          }}
-        >
+        <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed mt-2">
           {project.description}
         </p>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-1">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 text-[11px]"
-              style={{
-                fontFamily: 'var(--font-body)',
-                color: 'var(--text-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: '6px'
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
 
-      {/* Column 3: Arrow & Badge */}
-      <div className="flex flex-col items-end justify-between">
-        <span
-          className="text-[24px] transition-transform duration-300"
-          style={{
-            color: 'var(--text-muted)',
-            transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)'
-          }}
-        >
-          ↗
-        </span>
-
-        {project.badge && (
-          <span
-            className="px-3 py-1 text-[10px] font-medium"
-            style={{
-              fontFamily: 'var(--font-body)',
-              background: project.badge.color,
-              color: '#ffffff',
-              borderRadius: '6px'
-            }}
-          >
-            {project.badge.text}
-          </span>
-        )}
+      <div className="relative z-10 mt-8 pt-6 border-t border-[rgba(255,255,255,0.05)] flex justify-between items-end">
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map(tag => (
+            <span key={tag} className="text-[11px] font-mono text-[var(--text-muted)]">{tag}</span>
+          ))}
+        </div>
+        <div className="flex flex-col items-end gap-2">
+           <span className="text-[10px] font-mono text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity">View Case Study →</span>
+           {project.badge && (
+             <span className="px-3 py-1 text-[10px] font-medium rounded-full" style={{ background: `color-mix(in srgb, ${project.badge.color} 15%, transparent)`, color: project.badge.color, border: `1px solid color-mix(in srgb, ${project.badge.color} 30%, transparent)` }}>
+               {project.badge.text}
+             </span>
+           )}
+        </div>
       </div>
     </div>
   );
