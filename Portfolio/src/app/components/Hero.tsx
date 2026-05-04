@@ -108,14 +108,20 @@ export function Hero() {
 
             {/* Social Icons */}
             <div className="flex items-center gap-6 mt-2">
-              {['GitHub', 'LinkedIn', 'Email'].map((social) => (
+              {[
+                { name: 'GitHub', href: 'https://github.com/Animesh-86' },
+                { name: 'LinkedIn', href: 'https://www.linkedin.com/in/animesh-sharma-adev' },
+                { name: 'Email', href: 'mailto:animesh8sharma@gmail.com' }
+              ].map((social) => (
                 <a
-                  key={social}
-                  href="#"
+                  key={social.name}
+                  href={social.href}
+                  target={social.name !== 'Email' ? '_blank' : undefined}
+                  rel={social.name !== 'Email' ? 'noopener noreferrer' : undefined}
                   className="text-[13px] transition-all hover:-translate-y-1 hover:text-[var(--primary)]"
                   style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
                 >
-                  {social}
+                  {social.name}
                 </a>
               ))}
             </div>

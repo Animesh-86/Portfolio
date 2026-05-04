@@ -15,13 +15,13 @@ export function Contact() {
     },
     {
       label: 'LinkedIn',
-      value: 'linkedin.com/in/animesh-sharma',
-      href: 'https://linkedin.com/in/animesh-sharma'
+      value: 'linkedin.com/in/animesh-sharma-adev',
+      href: 'https://www.linkedin.com/in/animesh-sharma-adev'
     },
     {
       label: 'GitHub',
-      value: 'github.com/animesh-sharma',
-      href: 'https://github.com/animesh-sharma'
+      value: 'github.com/Animesh-86',
+      href: 'https://github.com/Animesh-86'
     }
   ];
 
