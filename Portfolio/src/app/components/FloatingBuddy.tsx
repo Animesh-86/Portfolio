@@ -47,8 +47,8 @@ export function FloatingBuddy() {
 
       // Ensure we don't go too far off screen (clamping with safe margins)
       // right-8 is 32px, so x=0 is 32px from edge. x=-10 is 42px from edge.
-      const clampedX = Math.max(-window.innerWidth + 180, Math.min(-20, targetX));
-      const clampedY = Math.max(-window.innerHeight + 180, Math.min(-20, targetY));
+      const clampedX = Math.max(-window.innerWidth + 180, Math.min(0, targetX));
+      const clampedY = Math.max(-window.innerHeight + 180, Math.min(0, targetY));
 
       animate(x, clampedX, { type: 'spring', stiffness: 40, damping: 20 });
       animate(y, clampedY, { type: 'spring', stiffness: 40, damping: 20 });
@@ -126,7 +126,7 @@ export function FloatingBuddy() {
           ref={buddyRef}
           drag
           dragMomentum={false}
-          dragConstraints={{ left: -window.innerWidth + 150, right: -20, top: -window.innerHeight + 150, bottom: -20 }}
+          dragConstraints={{ left: -window.innerWidth + 150, right: 0, top: -window.innerHeight + 150, bottom: 0 }}
           onDragStart={() => {
             setIsDragging(true);
             setMessage('Wheee! Where are we going?');
@@ -136,7 +136,23 @@ export function FloatingBuddy() {
             setMessage('I like this spot!');
           }}
           initial={{ opacity: 0, scale: 0, y: 100, x: 0 }}
-          style={{ x, y, rotate }}
+          style={{ 
+            x, 
+            y, 
+            rotate,
+            bottom: '64px',
+            right: '64px',
+            width: '64px',
+            height: '64px',
+            background: 'rgba(10, 10, 15, 0.72)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '16px',
+            boxShadow: isDragging ? '0 20px 50px rgba(0,0,0,0.5)' : '0 10px 30px rgba(99, 102, 241, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
           animate={{ 
             opacity: 1, 
             scale: isDragging ? 1.1 : 1
@@ -144,7 +160,7 @@ export function FloatingBuddy() {
           transition={{
             scale: { duration: 0.2 }
           }}
-          className={`fixed bottom-8 right-8 z-[100] ${isDragging ? 'cursor-grabbing' : 'cursor-grab active:cursor-grabbing'}`}
+          className={`fixed z-[100] ${isDragging ? 'cursor-grabbing' : 'cursor-grab active:cursor-grabbing'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={handleBuddyClick}
