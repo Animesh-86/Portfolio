@@ -44,9 +44,10 @@ export function FloatingBuddy() {
       const targetY = y.get() + (Math.random() - 0.5) * 100;
       const tilt = targetX > x.get() ? 10 : -10;
 
-      // Ensure we don't go too far off screen (clamping)
-      const clampedX = Math.max(-window.innerWidth + 150, Math.min(0, targetX));
-      const clampedY = Math.max(-window.innerHeight + 150, Math.min(0, targetY));
+      // Ensure we don't go too far off screen (clamping with safe margins)
+      // right-8 is 32px, so x=0 is 32px from edge. x=-10 is 42px from edge.
+      const clampedX = Math.max(-window.innerWidth + 180, Math.min(-20, targetX));
+      const clampedY = Math.max(-window.innerHeight + 180, Math.min(-20, targetY));
 
       animate(x, clampedX, { type: 'spring', stiffness: 40, damping: 20 });
       animate(y, clampedY, { type: 'spring', stiffness: 40, damping: 20 });
@@ -124,7 +125,7 @@ export function FloatingBuddy() {
           ref={buddyRef}
           drag
           dragMomentum={false}
-          dragConstraints={{ left: -window.innerWidth + 100, right: 0, top: -window.innerHeight + 100, bottom: 0 }}
+          dragConstraints={{ left: -window.innerWidth + 150, right: -20, top: -window.innerHeight + 150, bottom: -20 }}
           onDragStart={() => {
             setIsDragging(true);
             setMessage('Wheee! Where are we going?');
