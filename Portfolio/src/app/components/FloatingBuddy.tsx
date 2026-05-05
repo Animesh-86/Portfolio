@@ -18,6 +18,7 @@ export function FloatingBuddy() {
   const y = useMotionValue(0);
   const rotate = useMotionValue(0);
 
+  /* 
   // Show welcome sequence on reload
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,6 +63,12 @@ export function FloatingBuddy() {
     const interval = setInterval(wander, 7000);
     return () => clearInterval(interval);
   }, [isVisible, isDragging, isHovered, x, y, rotate]);
+  */
+
+  // Quick fix to show him for testing
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   // Section Awareness: Say something when a new section is in view
   useEffect(() => {
@@ -137,11 +144,9 @@ export function FloatingBuddy() {
           }}
           initial={{ opacity: 0, scale: 0, y: 100, x: 0 }}
           style={{ 
-            x, 
-            y, 
             rotate,
             bottom: '80px',
-            left: 'calc(100vw - 144px)',
+            left: '80px',
             width: '64px',
             height: '64px',
             background: 'rgba(10, 10, 15, 0.72)',
