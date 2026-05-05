@@ -6,16 +6,18 @@ interface MagneticButtonProps {
   className?: string;
   onClick?: () => void;
   href?: string;
+  target?: string;
   style?: React.CSSProperties;
 }
 
-export function MagneticButton({ children, className = '', onClick, href, style }: MagneticButtonProps) {
+export function MagneticButton({ children, className = '', onClick, href, target, style }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY } = e;
-    const { height, width, left, top } = ref.current!.getBoundingClientRect();
+    if (!ref.current) return;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
     // Move the button slightly towards the cursor (20% of the distance)
@@ -37,15 +39,21 @@ export function MagneticButton({ children, className = '', onClick, href, style 
       transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
       className={className}
       onClick={onClick}
-      style={{ ...style, display: 'inline-flex' }}
+      style={{ ...style, display: 'inline-flex', cursor: 'pointer' }}
     >
       {children}
     </motion.div>
   );
 
   if (href) {
+    const isExternal = href.startsWith('http') || href.startsWith('mailto:');
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block' }}>
+      <a 
+        href={href} 
+        target={target || (isExternal ? "_blank" : undefined)} 
+        rel={isExternal ? "noopener noreferrer" : undefined} 
+        style={{ display: 'inline-block', textDecoration: 'none' }}
+      >
         {content}
       </a>
     );

@@ -13,7 +13,14 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = ['About', 'Work', 'Stack', 'Contact'];
+  const navLinks = [
+    { label: 'About', href: '#about' },
+    { label: 'Work', href: '#work' },
+    { label: 'Stack', href: '#stack' },
+    { label: 'Activity', href: '#github' },
+    { label: 'Certifications', href: '#achievements' },
+    { label: 'Contact', href: '#contact' }
+  ];
 
   return (
     <nav
@@ -43,16 +50,16 @@ export function Navbar() {
         </div>
 
         {/* Center: Nav Links */}
-        <div className="flex items-center gap-10">
+        <div className="flex items-center gap-8">
           {navLinks.map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
+              key={link.label}
+              href={link.href}
               className="group relative text-[13px] transition-colors"
               style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
             >
               <span className="group-hover:text-[var(--primary)] transition-colors">
-                {link}
+                {link.label}
               </span>
               <span
                 className="absolute -bottom-1 left-0 h-[1px] bg-[var(--primary)] w-0 group-hover:w-full transition-all duration-300"
@@ -78,6 +85,7 @@ export function Navbar() {
           </div>
 
           <MagneticButton
+            href="/Animesh_Sharma_Resume.pdf"
             onClick={() => trackEvent('resume_download_click', { location: 'navbar' })}
             className="px-4 py-2 text-[13px] font-medium transition-all hover:bg-[rgba(255,255,255,0.04)]"
             style={{
@@ -86,7 +94,7 @@ export function Navbar() {
               color: 'var(--text-primary)'
             }}
           >
-            Download CV
+            Download Resume
           </MagneticButton>
         </div>
       </div>

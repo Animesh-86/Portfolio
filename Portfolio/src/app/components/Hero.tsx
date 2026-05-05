@@ -81,6 +81,7 @@ export function Hero() {
             {/* CTA Buttons */}
             <div className="flex items-center gap-4 mt-2">
               <MagneticButton
+                href="#work"
                 className="px-6 py-3 text-[14px] font-medium transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] group"
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -95,6 +96,7 @@ export function Hero() {
               </MagneticButton>
 
               <MagneticButton
+                href="#contact"
                 className="px-6 py-3 text-[14px] font-medium transition-all hover:bg-[rgba(255,255,255,0.04)]"
                 style={{
                   fontFamily: 'var(--font-body)',
@@ -111,7 +113,7 @@ export function Hero() {
               {[
                 { name: 'GitHub', href: 'https://github.com/Animesh-86' },
                 { name: 'LinkedIn', href: 'https://www.linkedin.com/in/animesh-sharma-adev' },
-                { name: 'Email', href: 'mailto:animesh8sharma@gmail.com' }
+                { name: 'Email', href: '#contact' }
               ].map((social) => (
                 <a
                   key={social.name}
