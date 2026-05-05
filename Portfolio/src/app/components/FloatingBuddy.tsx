@@ -18,7 +18,6 @@ export function FloatingBuddy() {
   const y = useMotionValue(0);
   const rotate = useMotionValue(0);
 
-  /* 
   // Show welcome sequence on reload
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,9 +46,8 @@ export function FloatingBuddy() {
       const tilt = targetX > x.get() ? 10 : -10;
 
       // Ensure we don't go too far off screen (clamping with safe margins)
-      // right-8 is 32px, so x=0 is 32px from edge. x=-10 is 42px from edge.
-      const clampedX = Math.max(-window.innerWidth + 180, Math.min(0, targetX));
-      const clampedY = Math.max(-window.innerHeight + 180, Math.min(0, targetY));
+      const clampedX = Math.max(-window.innerWidth + 250, Math.min(0, targetX));
+      const clampedY = Math.max(-window.innerHeight + 250, Math.min(0, targetY));
 
       animate(x, clampedX, { type: 'spring', stiffness: 40, damping: 20 });
       animate(y, clampedY, { type: 'spring', stiffness: 40, damping: 20 });
@@ -63,12 +61,6 @@ export function FloatingBuddy() {
     const interval = setInterval(wander, 7000);
     return () => clearInterval(interval);
   }, [isVisible, isDragging, isHovered, x, y, rotate]);
-  */
-
-  // Quick fix to show him for testing
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   // Section Awareness: Say something when a new section is in view
   useEffect(() => {
@@ -133,7 +125,7 @@ export function FloatingBuddy() {
           ref={buddyRef}
           drag
           dragMomentum={false}
-          dragConstraints={{ left: -window.innerWidth + 150, right: 0, top: -window.innerHeight + 150, bottom: 0 }}
+          dragConstraints={{ left: -window.innerWidth + 250, right: 0, top: -window.innerHeight + 250, bottom: 0 }}
           onDragStart={() => {
             setIsDragging(true);
             setMessage('Wheee! Where are we going?');
@@ -144,9 +136,11 @@ export function FloatingBuddy() {
           }}
           initial={{ opacity: 0, scale: 0, y: 100, x: 0 }}
           style={{ 
+            x, 
+            y, 
             rotate,
-            bottom: '80px',
-            left: '80px',
+            bottom: '100px',
+            right: '100px',
             width: '64px',
             height: '64px',
             background: 'rgba(10, 10, 15, 0.72)',
