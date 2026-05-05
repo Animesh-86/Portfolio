@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useLayoutEffect } from 'react';
 import Home from './pages/Home';
 import ProjectCaseStudy from './pages/ProjectCaseStudy';
+import { FloatingBuddy } from './components/FloatingBuddy';
+import { Toaster } from 'sonner';
 
 function resetScrollPosition() {
   const root = document.documentElement;
@@ -40,6 +42,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/project/:id" element={<ProjectCaseStudy />} />
       </Routes>
+      <FloatingBuddy />
+      <Toaster position="top-center" expand={false} richColors />
     </Router>
   );
 }

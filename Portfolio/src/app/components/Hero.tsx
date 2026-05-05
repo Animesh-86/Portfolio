@@ -182,15 +182,19 @@ export function Hero() {
         {/* Bottom Marquee */}
         <div className="mt-24 pt-12" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="overflow-hidden">
-            <div className="flex gap-8 animate-marquee whitespace-nowrap">
-              {['Spring Boot', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS', 'PostgreSQL', 'React', 'TypeScript', 'gRPC', 'Spring Boot', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS'].map((tech, i) => (
-                <span
-                  key={i}
-                  className="text-[11px]"
-                  style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-                >
-                  {tech} <span style={{ color: 'var(--primary)' }}>·</span>
-                </span>
+            <div className="flex gap-12 animate-marquee whitespace-nowrap w-max">
+              {[...Array(2)].map((_, idx) => (
+                <div key={idx} className="flex gap-12 items-center">
+                  {['Spring Boot', 'Redis', 'WebRTC', 'Flutter', 'Docker', 'AWS', 'PostgreSQL', 'React', 'TypeScript', 'gRPC'].map((tech, i) => (
+                    <span
+                      key={i}
+                      className="text-[11px] flex items-center gap-12"
+                      style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
+                    >
+                      {tech} <span className="w-1 h-1 rounded-full" style={{ background: 'var(--primary)' }} />
+                    </span>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
