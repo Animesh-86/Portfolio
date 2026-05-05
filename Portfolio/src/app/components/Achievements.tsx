@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 
 interface Certificate {
   id: string;
@@ -27,8 +27,6 @@ const certificates: Certificate[] = [
   { id: 'nw-1', title: 'NxtWave Training', category: 'Engineering', src: '/certificates/nxtwave.jpeg', accent: '#0066CC' }
 ];
 
-const categories = ['All', 'Cloud', 'AI & ML', 'Languages', 'Frontend', 'Mobile', 'Databases', 'DSA', 'Enterprise', 'Engineering'];
-
 const categoryNotes: Record<string, string> = {
   Cloud: 'Cloud fundamentals and AWS training focused on building and deploying scalable systems.',
   'AI & ML': 'AI and machine learning credentials covering applied concepts and practical tooling.',
@@ -41,404 +39,227 @@ const categoryNotes: Record<string, string> = {
   Engineering: 'Engineering-focused training from hands-on program work and applied development practice.'
 };
 
-// Stacking Slider Component
-function StackingSlider({ children, cardGap = 20, stackOffset = 20, mobileStackOffset = 0 }: any) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cardWidth, setCardWidth] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const childrenArray = Array.isArray(children) ? children : [children];
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      setCardWidth(cardRefs.current[0]?.offsetWidth ?? 0);
-      setIsMobile(window.innerWidth < 992);
-    };
-
-    updateDimensions();
-    const timeoutId = window.setTimeout(updateDimensions, 100);
-    window.addEventListener('resize', updateDimensions);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-      window.removeEventListener('resize', updateDimensions);
-    };
-  }, [childrenArray.length]);
-
-  const goToNext = () => {
-    if (currentIndex < childrenArray.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const goToPrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
-  const activeOffset = isMobile ? mobileStackOffset : stackOffset;
-
-  const getCardTransform = (index: number) => {
-    if (index < currentIndex) {
-      const slideMove = (cardWidth + cardGap - activeOffset) * index;
-      return -slideMove;
-    } else {
-      const slideMove = (cardWidth + cardGap - activeOffset) * currentIndex;
-      return -slideMove;
-    }
-  };
-
-  const isAtStart = currentIndex === 0;
-  const isAtEnd = currentIndex === childrenArray.length - 1;
+function InfiniteMarquee({ items, speed = 40, direction = 'left', onCardClick }: any) {
+  // Triple the items to ensure seamless loop even on ultra-wide screens
+  const tripledItems = [...items, ...items, ...items];
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div style={{ flex: 1, height: '100%', position: 'relative', overflow: 'visible', display: 'flex', alignItems: 'center' }}>
-        <div style={{ display: 'flex', height: 'fit-content', position: 'relative', gap: `${cardGap}px` }}>
-          {childrenArray.map((child: any, index: number) => (
-            <motion.div
-              key={index}
-              ref={(element) => {
-                cardRefs.current[index] = element;
-              }}
-              animate={{ x: getCardTransform(index) }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
-              style={{
-                flexShrink: 0,
-                position: 'relative',
-                zIndex: index + 1
-              }}
-            >
-              {child}
-            </motion.div>
-          ))}
-        </div>
-      </div>
+    <div 
+      className="relative w-full overflow-hidden py-4"
+    >
+      <motion.div
+        className="flex gap-4 w-max"
+        animate={{
+          x: direction === 'left' ? [0, -100/3 + '%'] : [-100/3 + '%', 0],
+        }}
+        transition={{
+          duration: speed,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      >
+        {tripledItems.map((cert, index) => (
+          <motion.div
+            key={`${cert.id}-${index}`}
+            whileHover={{ y: -5, scale: 1.02 }}
+            className="relative group cursor-pointer"
+            onClick={() => onCardClick(cert)}
+            style={{
+              width: '320px',
+              height: '220px',
+              flexShrink: 0,
+              borderRadius: '20px',
+              overflow: 'hidden',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: `0 15px 30px rgba(0,0,0,0.3)`
+            }}
+          >
+            <img
+              src={cert.src}
+              alt={cert.title}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090C12] via-[#090C12]/40 to-transparent" />
+            
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              <div 
+                className="w-fit px-3 py-1 rounded-full text-[9px] font-mono font-bold mb-2"
+                style={{ 
+                  background: `${cert.accent}22`,
+                  border: `1px solid ${cert.accent}44`,
+                  color: cert.accent 
+                }}
+              >
+                {cert.category}
+              </div>
+              <h3 className="text-white text-base font-display font-medium leading-tight group-hover:text-[var(--primary)] transition-colors">
+                {cert.title}
+              </h3>
+            </div>
 
-      {childrenArray.length > 0 && (
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'flex-start' }}>
-          <button
-            onClick={goToPrev}
-            disabled={isAtStart}
-            style={{
-              width: '40px',
-              height: '40px',
-              background: isAtStart ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '50%',
-              cursor: isAtStart ? 'not-allowed' : 'pointer',
-              opacity: isAtStart ? 0.3 : 1,
-              transition: 'all 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontSize: '18px'
-            }}
-          >
-            ←
-          </button>
-          <button
-            onClick={goToNext}
-            disabled={isAtEnd}
-            style={{
-              width: '40px',
-              height: '40px',
-              background: isAtEnd ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '50%',
-              cursor: isAtEnd ? 'not-allowed' : 'pointer',
-              opacity: isAtEnd ? 0.3 : 1,
-              transition: 'all 0.2s ease',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontSize: '18px'
-            }}
-          >
-            →
-          </button>
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '10px' }}>
-            {currentIndex + 1} of {childrenArray.length}
-          </span>
-        </div>
-      )}
+            {/* Accent Glow */}
+            <div 
+              className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity"
+              style={{ background: cert.accent }}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 }
 
 export function Achievements() {
-  const [activeCategory, setActiveCategory] = useState('All');
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 
-  const filtered = useMemo(
-    () => (activeCategory === 'All' ? certificates : certificates.filter((c) => c.category === activeCategory)),
-    [activeCategory]
-  );
+  // Split certificates into two rows for a more dynamic look
+  const row1 = certificates.slice(0, Math.ceil(certificates.length / 2));
+  const row2 = certificates.slice(Math.ceil(certificates.length / 2));
 
   const selectedCertificateNote = selectedCertificate ? categoryNotes[selectedCertificate.category] : '';
 
   return (
     <section
+      id="achievements"
       className="py-32 relative overflow-hidden"
       style={{
-        background: 'radial-gradient(circle at top, rgba(14, 22, 34, 0.96) 0%, rgba(9, 12, 18, 0.99) 50%, var(--background) 100%)'
+        background: 'radial-gradient(circle at center, rgba(14, 22, 34, 0.96) 0%, var(--background) 100%)'
       }}
     >
-      <div className="absolute left-8 top-16 text-[200px] font-bold opacity-[0.03] pointer-events-none select-none" style={{ fontFamily: 'var(--font-display)' }}>
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--primary)] opacity-[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#6366f1] opacity-[0.03] blur-[120px] pointer-events-none" />
+
+      {/* Section Number Watermark - Moved outside main container to align with others */}
+      <div className="absolute left-4 top-16 text-[220px] font-bold opacity-[0.02] pointer-events-none select-none font-display leading-none">
         05
       </div>
 
       <div className="max-w-[1440px] mx-auto px-8 relative">
-
-        <div className="text-[10px] mb-12 tracking-[0.2em]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}>
-          // Credentials
+        <div className="text-[10px] mb-4 tracking-[0.3em] font-mono text-[var(--primary)] uppercase">
+          // Global Recognition
         </div>
 
-        <div className="mb-16 relative z-10">
-          <h2 className="text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
-            Certifications and Badges
-          </h2>
+        <div className="mb-20 relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div>
+            <h2 className="text-[56px] font-medium font-display leading-tight text-white max-w-2xl">
+              Professional <span className="text-[var(--primary)]">Credentials</span> & Badges
+            </h2>
+          </div>
+          <p className="text-[var(--text-muted)] font-body max-w-sm leading-relaxed mb-4">
+            A continuous track record of professional growth, technical mastery, and industry-standard certifications.
+          </p>
         </div>
 
-        <div className="mb-12 flex flex-wrap gap-2 relative z-10">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className="px-4 py-2 text-[12px] font-medium transition-all duration-300 tracking-[0.1em] uppercase"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                background: activeCategory === category ? 'var(--primary)' : 'var(--surface)',
-                border: `1px solid ${activeCategory === category ? 'var(--primary)' : 'var(--border)'}`,
-                color: activeCategory === category ? '#ffffff' : 'var(--text-secondary)',
-                borderRadius: '6px'
-              }}
-            >
-              {category}
-            </button>
-          ))}
+        {/* Marquee Rows - Now contained within the max-width layout */}
+        <div className="relative z-10 space-y-2 overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.01] p-4">
+          <InfiniteMarquee 
+            items={row1} 
+            speed={60} 
+            direction="left" 
+            onCardClick={setSelectedCertificate} 
+          />
+          <InfiniteMarquee 
+            items={row2} 
+            speed={70} 
+            direction="right" 
+            onCardClick={setSelectedCertificate} 
+          />
         </div>
 
-        <div style={{ height: '500px', width: '100%', position: 'relative', zIndex: 10 }}>
-          <StackingSlider cardGap={30} stackOffset={40} mobileStackOffset={20}>
-            {filtered.map((cert) => (
-              <div
-                key={cert.id}
-                onClick={() => setSelectedCertificate(cert)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setSelectedCertificate(cert);
-                  }
-                }}
-                style={{
-                  width: '320px',
-                  height: '420px',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  border: `2px solid ${cert.accent}`,
-                  background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)`,
-                  boxShadow: `0 0 24px ${cert.accent}40, inset 0 1px 1px rgba(255,255,255,0.1)`,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                <div style={{ position: 'relative', height: '100%' }}>
-                  <img
-                    src={cert.src}
-                    alt={cert.title}
-                    loading="lazy"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.8) 100%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end',
-                      padding: '20px'
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'inline-block',
-                        background: cert.accent,
-                        color: '#ffffff',
-                        padding: '6px 12px',
-                        borderRadius: '20px',
-                        fontSize: '10px',
-                        fontWeight: 'bold',
-                        marginBottom: '12px',
-                        width: 'fit-content',
-                        fontFamily: 'var(--font-mono)'
-                      }}
-                    >
-                      {cert.category}
-                    </div>
-                    <h3
-                      style={{
-                        color: '#ffffff',
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        fontFamily: 'var(--font-display)',
-                        margin: 0,
-                        lineHeight: '1.3'
-                      }}
-                    >
-                      {cert.title}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </StackingSlider>
-        </div>
-
-        <div className="mt-8 text-[13px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-          Showing <span style={{ color: 'var(--text-primary)' }}>{filtered.length}</span> credential{filtered.length !== 1 ? 's' : ''} in {activeCategory === 'All' ? 'all categories' : activeCategory}
+        <div className="mt-12">
+          <div className="text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" />
+            Scroll horizontally or click to verify details
+          </div>
         </div>
       </div>
 
+      {/* Modal / Preview */}
       {selectedCertificate && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setSelectedCertificate(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 60,
-            background: 'rgba(2, 6, 12, 0.78)',
-            backdropFilter: 'blur(14px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px'
-          }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/80 backdrop-blur-xl"
         >
           <motion.div
-            initial={{ scale: 0.92, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            onClick={(event) => event.stopPropagation()}
-            style={{
-              width: 'min(980px, 100%)',
-              maxHeight: '90vh',
-              overflow: 'auto',
-              borderRadius: '28px',
-              border: `1px solid ${selectedCertificate.accent}66`,
-              background: 'linear-gradient(180deg, rgba(14, 22, 34, 0.98) 0%, rgba(8, 12, 18, 0.98) 100%)',
-              boxShadow: `0 30px 80px rgba(0,0,0,0.6), 0 0 50px ${selectedCertificate.accent}22`
-            }}
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-auto rounded-[32px] bg-[#090C12] border border-white/10 shadow-2xl flex flex-col md:flex-row"
           >
-            <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 0.9fr', gap: '0', minHeight: '560px' }}>
-              <div style={{ position: 'relative', background: 'rgba(255,255,255,0.03)' }}>
-                <img
-                  src={selectedCertificate.src}
-                  alt={selectedCertificate.title}
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: '560px' }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.6) 100%)'
-                  }}
-                />
-                <button
-                  onClick={() => setSelectedCertificate(null)}
-                  aria-label="Close certificate preview"
-                  style={{
-                    position: 'absolute',
-                    top: '18px',
-                    right: '18px',
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '50%',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(10, 14, 20, 0.7)',
-                    color: '#fff',
-                    cursor: 'pointer'
-                  }}
-                >
-                  ×
-                </button>
+            <div className="md:w-1/2 h-full min-h-[400px] relative">
+              <img
+                src={selectedCertificate.src}
+                alt={selectedCertificate.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#090C12] via-transparent to-transparent" />
+            </div>
+
+            <div className="md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
+              <div 
+                className="w-fit px-4 py-1.5 rounded-full text-[11px] font-mono font-bold tracking-widest mb-6 uppercase"
+                style={{ 
+                  background: `${selectedCertificate.accent}15`,
+                  border: `1px solid ${selectedCertificate.accent}30`,
+                  color: selectedCertificate.accent 
+                }}
+              >
+                {selectedCertificate.category}
               </div>
 
-              <div style={{ padding: '36px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '18px' }}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    width: 'fit-content',
-                    padding: '8px 14px',
-                    borderRadius: '999px',
-                    border: `1px solid ${selectedCertificate.accent}66`,
-                    background: `${selectedCertificate.accent}22`,
-                    color: '#fff',
-                    fontSize: '12px',
-                    fontFamily: 'var(--font-mono)',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  {selectedCertificate.category}
-                </div>
+              <h3 className="text-3xl sm:text-4xl font-display font-medium text-white mb-6 leading-tight">
+                {selectedCertificate.title}
+              </h3>
 
-                <div>
-                  <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', color: 'var(--text-primary)', fontSize: '32px', lineHeight: '1.1' }}>
-                    {selectedCertificate.title}
-                  </h3>
-                  <p style={{ marginTop: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', lineHeight: '1.8', fontSize: '15px' }}>
-                    {selectedCertificateNote}
-                  </p>
-                </div>
+              <p className="text-[var(--text-muted)] font-body leading-relaxed mb-10">
+                {selectedCertificateNote}
+              </p>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '12px' }}>
-                  <div style={{ padding: '14px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '6px' }}>Certificate</div>
-                    <div style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '15px' }}>{selectedCertificate.title}</div>
-                  </div>
-                  <div style={{ padding: '14px', borderRadius: '16px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '6px' }}>Category</div>
-                    <div style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '15px' }}>{selectedCertificate.category}</div>
-                  </div>
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <span className="block text-[10px] font-mono text-[var(--text-muted)] uppercase mb-1">Status</span>
+                  <span className="text-white font-medium">Verified</span>
                 </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                  <span className="block text-[10px] font-mono text-[var(--text-muted)] uppercase mb-1">Issuer</span>
+                  <span className="text-white font-medium">{selectedCertificate.category} Partner</span>
+                </div>
+              </div>
 
-                <button
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
                   onClick={() => setSelectedCertificate(null)}
-                  style={{
-                    marginTop: '8px',
-                    width: 'fit-content',
-                    padding: '12px 18px',
-                    borderRadius: '12px',
-                    border: 'none',
-                    background: selectedCertificate.accent,
-                    color: '#fff',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '12px',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                    cursor: 'pointer'
-                  }}
+                  className="flex-1 px-8 py-4 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition-all text-sm"
                 >
                   Close Preview
                 </button>
+                <button className="px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all text-sm">
+                  View Public URL
+                </button>
               </div>
             </div>
+
+            <button 
+              onClick={() => setSelectedCertificate(null)}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white hover:bg-black/60 transition-all"
+            >
+              ×
+            </button>
           </motion.div>
         </motion.div>
       )}
+
+      <style>{`
+        #achievements .no-scrollbar::-webkit-scrollbar { display: none; }
+        #achievements .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </section>
   );
 }
