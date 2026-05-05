@@ -22,6 +22,7 @@ export function FloatingBuddy() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
+      animate(y, 0, { type: 'spring', stiffness: 50, damping: 20 });
       setMessage("Hey! I'm Ani-Bot. Let's explore Animesh's portfolio together!");
       setIsHovered(true);
 
@@ -32,7 +33,7 @@ export function FloatingBuddy() {
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [y]);
 
   // Wander Logic: Occasionally move to a new spot
   useEffect(() => {
@@ -134,16 +135,14 @@ export function FloatingBuddy() {
             setIsDragging(false);
             setMessage('I like this spot!');
           }}
-          initial={{ opacity: 0, scale: 0, y: 100 }}
+          initial={{ opacity: 0, scale: 0, y: 100, x: 0 }}
           style={{ x, y, rotate }}
           animate={{ 
             opacity: 1, 
-            scale: isDragging ? 1.1 : 1,
-            y: 0
+            scale: isDragging ? 1.1 : 1
           }}
           transition={{
-            scale: { duration: 0.2 },
-            y: { duration: 0.5 }
+            scale: { duration: 0.2 }
           }}
           className={`fixed bottom-8 right-8 z-[100] ${isDragging ? 'cursor-grabbing' : 'cursor-grab active:cursor-grabbing'}`}
           onMouseEnter={() => setIsHovered(true)}
