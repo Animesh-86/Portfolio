@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -6,6 +7,7 @@ export function Contact() {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const contactLinks = [
     {
@@ -31,15 +33,47 @@ export function Contact() {
     { icon: '📍', text: 'Gujarat, India' }
   ];
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
 
-    const subject = encodeURIComponent(`Portfolio message from ${formData.name || 'a visitor'}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name || 'Not provided'}\nEmail: ${formData.email || 'Not provided'}\n\n${formData.message}`
-    );
+    try {
+      // Using Web3Forms for reliable delivery. 
+      // You can get your own access key for free at https://web3forms.com/
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '8af96117-23df-4c9c-8d53-fc81087d9a27', // Activated with provided key
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `Portfolio Message from ${formData.name}`,
+        }),
+      });
 
-    window.location.href = `mailto:animesh8sharma@gmail.com?subject=${subject}&body=${body}`;
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Message sent successfully! I will get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      toast.error('Something went wrong. Please try again or email me directly.');
+      
+      // Fallback to mailto if API fails
+      const subject = encodeURIComponent(`Portfolio message from ${formData.name || 'a visitor'}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name || 'Not provided'}\nEmail: ${formData.email || 'Not provided'}\n\n${formData.message}`
+      );
+      window.location.href = `mailto:animesh8sharma@gmail.com?subject=${subject}&body=${body}`;
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -152,14 +186,15 @@ export function Contact() {
 
               <button
                 type="submit"
-                className="px-5 py-3 text-[13px] font-medium transition-all hover:brightness-110 hover:scale-[1.01] active:scale-[0.99] self-start"
+                disabled={isSubmitting}
+                className="px-5 py-3 text-[13px] font-medium transition-all hover:brightness-110 hover:scale-[1.01] active:scale-[0.99] self-start disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   fontFamily: 'var(--font-body)',
                   background: 'var(--primary)',
                   color: '#ffffff'
                 }}
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
 
