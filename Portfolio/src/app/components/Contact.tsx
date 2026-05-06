@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { MagneticButton } from './MagneticButton';
+import { trackEvent } from '../utils/analytics';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -29,8 +31,7 @@ export function Contact() {
 
   const contactDetails = [
     { icon: '✉️', text: 'animesh8sharma@gmail.com' },
-    { icon: '📱', text: '+91 XXX XXX XXXX' },
-    { icon: '📍', text: 'Gujarat, India' }
+    { icon: '📍', text: 'Vadodara, Gujarat, India' }
   ];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,12 +58,15 @@ export function Contact() {
 
       const result = await response.json();
       if (result.success) {
+        trackEvent('contact_form_submit', { success: true });
         toast.success('Message sent successfully! I will get back to you soon.');
         setFormData({ name: '', email: '', message: '' });
       } else {
+        trackEvent('contact_form_submit', { success: false, error: 'Form submission failed' });
         throw new Error('Form submission failed');
       }
     } catch (error) {
+      trackEvent('contact_form_submit', { success: false, fallback_to_mailto: true });
       toast.error('Something went wrong. Please try again or email me directly.');
       
       // Fallback to mailto if API fails
@@ -184,18 +188,20 @@ export function Contact() {
                 }}
               />
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-5 py-3 text-[13px] font-medium transition-all hover:brightness-110 hover:scale-[1.01] active:scale-[0.99] self-start disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  background: 'var(--primary)',
-                  color: '#ffffff'
-                }}
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </button>
+              <MagneticButton>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-5 py-3 text-[13px] font-medium transition-all hover:brightness-110 active:scale-[0.99] self-start disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    background: 'var(--primary)',
+                    color: '#ffffff'
+                  }}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </MagneticButton>
             </form>
 
             {contactLinks.map((link, index) => (
@@ -238,15 +244,9 @@ export function Contact() {
 
         {/* Footer */}
         <div
-          className="flex items-center justify-between px-8 py-6 mt-16"
+          className="flex items-center justify-center px-8 py-6 mt-16"
           style={{ borderTop: '1px solid var(--border)' }}
         >
-          <span
-            className="text-[9px]"
-            style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-          >
-            © 2026 Animesh Sharma · Systems Engineer
-          </span>
           <span
             className="text-[9px]"
             style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}

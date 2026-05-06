@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { PatternRevealGrid } from './PatternRevealGrid';
 import { MagneticButton } from './MagneticButton';
+import { trackEvent } from '../utils/analytics';
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -39,7 +40,7 @@ export function Hero() {
               className="text-[11px] tracking-[0.25em] uppercase"
               style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}
             >
-              FULL STACK DEVELOPER · AI/ML ENTHUSIAST
+              B.TECH STUDENT · FULL STACK DEVELOPER
             </div>
 
             {/* Name */}
@@ -120,6 +121,7 @@ export function Hero() {
                   href={social.href}
                   target={social.name !== 'Email' ? '_blank' : undefined}
                   rel={social.name !== 'Email' ? 'noopener noreferrer' : undefined}
+                  onClick={() => trackEvent('social_link_click', { platform: social.name.toLowerCase() })}
                   className="text-[13px] transition-all hover:-translate-y-1 hover:text-[var(--primary)]"
                   style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
                 >
