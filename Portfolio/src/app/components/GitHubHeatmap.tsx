@@ -172,7 +172,7 @@ export function GitHubHeatmap({
           className="text-[10px] mb-12 tracking-[0.2em]"
           style={{ fontFamily: 'var(--font-mono)', color: 'var(--primary)' }}
         >
-          // OPEN SOURCE
+          // CODE & CONTRIBUTIONS
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12">
@@ -189,7 +189,7 @@ export function GitHubHeatmap({
                 className="text-[15px] font-light max-w-[500px]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)', lineHeight: '1.7' }}
               >
-                My open-source journey visualized. I believe in contributing back to the community and building tools that solve real problems.
+                A visual footprint of my engineering work. This activity reflects my commitment to building personal projects, exploring new tech, and contributing to the open-source community.
               </p>
             </div>
 

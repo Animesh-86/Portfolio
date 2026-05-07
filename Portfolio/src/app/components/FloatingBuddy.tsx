@@ -65,10 +65,10 @@ export function FloatingBuddy() {
   // Section Awareness: Say something when a new section is in view
   useEffect(() => {
     const sectionMessages: Record<string, string> = {
-      about: "Animesh is a systems engineer with a passion for high-performance backends.",
+      about: "Animesh is a B.Tech student with a passion for building high-performance backends.",
       work: "He built these projects using Kafka, Redis, and distributed architectures.",
       stack: "He loves working with Spring Boot and event-driven systems.",
-      github: "He contributes to open source regularly. Look at that heatmap!",
+      github: "He builds personal projects and contributes to open source. Look at that heatmap!",
       achievements: "These certifications prove his commitment to technical mastery.",
       contact: "You should definitely reach out to him. He's great to work with!"
     };

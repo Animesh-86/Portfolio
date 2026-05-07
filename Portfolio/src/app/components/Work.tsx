@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ExternalLink, Github } from 'lucide-react';
+import { trackEvent } from '../utils/analytics';
 
 type FilterType = 'All' | 'Full Stack' | 'Mobile' | 'Open Source' | 'Hackathon' | 'Freelance' | 'Group Project' | 'Library';
 
@@ -17,37 +18,25 @@ interface Project {
 }
 
 const projects: Project[] = [
-  // FEATURED PROJECTS
-  {
-    id: '04',
-    year: '2025',
-    name: 'Parallax',
-    subtitle: 'COLLABORATIVE CODE EDITOR',
-    description: 'Real-time collaborative code editor with multi-cursor support, live syntax highlighting, and peer-to-peer video calling built with WebSocket synchronization and WebRTC.',
-    tags: ['React', 'Spring Boot', 'WebRTC'],
-    category: ['All', 'Full Stack'],
-    isFeatured: true
-  },
   {
     id: '01',
     year: '2026',
     name: 'Axion',
     subtitle: 'EV FLEET TELEMETRY & OTA',
-    description: 'Real-time telemetry system for electric vehicle fleets with digital twin architecture. Processes 1000+ events/min using Kafka streams, Redis caching, and Spring Boot microservices.',
+    description: 'Real-time telemetry system for electric vehicle fleets with digital twin architecture. Processes 1000+ events/min using Kafka streams and Redis.',
     tags: ['Spring Boot', 'Kafka', 'Redis', 'React'],
     badge: { text: 'Featured', color: 'var(--primary)' },
     category: ['All', 'Full Stack'],
     isFeatured: true
   },
   {
-    id: '09',
-    year: '2024',
-    name: 'JSON Parser Library',
-    subtitle: 'ZERO-DEPENDENCY JAVA ENGINE',
-    description: 'Lightweight JSON parsing library built individually from scratch in Java with a custom lexer.',
-    tags: ['Java', 'Lexer'],
-    badge: { text: 'Individual', color: 'var(--primary)' },
-    category: ['All', 'Library'],
+    id: '04',
+    year: '2025',
+    name: 'Parallax',
+    subtitle: 'COLLABORATIVE CODE EDITOR',
+    description: 'Real-time collaborative code editor with multi-cursor support, live syntax highlighting, and peer-to-peer video calling.',
+    tags: ['React', 'Spring Boot', 'WebRTC', 'Docker'],
+    category: ['All', 'Full Stack'],
     isFeatured: true
   },
   {
@@ -55,19 +44,29 @@ const projects: Project[] = [
     year: '2025',
     name: 'BiteBox POS System',
     subtitle: 'COMMERCIAL POINT-OF-SALE',
-    description: 'Full-featured point-of-sale freelance project for retail businesses with inventory management.',
-    tags: ['Flutter', 'Firebase'],
+    description: 'Full-featured point-of-sale freelance project for retail businesses with real-time inventory and multi-device sync.',
+    tags: ['Flutter', 'Firebase', 'SQLite'],
     badge: { text: 'Freelance', color: 'var(--highlight)' },
     category: ['All', 'Mobile', 'Freelance'],
     isFeatured: true
   },
-  // ARCHIVE PROJECTS
+  {
+    id: '09',
+    year: '2024',
+    name: 'JSON Parser Library',
+    subtitle: 'ZERO-DEPENDENCY JAVA ENGINE',
+    description: 'Lightweight JSON parsing library built from scratch in Java with a custom lexer and query engine.',
+    tags: ['Java 17', 'Parser', 'Lexer'],
+    badge: { text: 'Individual', color: 'var(--primary)' },
+    category: ['All', 'Library'],
+    isFeatured: true
+  },
   {
     id: '02',
     year: '2026',
     name: 'DataTrust Engine',
     subtitle: 'UNIFIED DATA TRUST SCORES',
-    description: 'Standalone observability tool built during the WeMakeDev Metadata Hackathon. Connects to OpenMetadata to compute a 0-100 Trust Score for data assets by aggregating health signals.',
+    description: 'Observability tool built during the WeMakeDev Metadata Hackathon. Connects to OpenMetadata to compute Trust Scores.',
     tags: ['OpenMetadata', 'Python', 'React'],
     badge: { text: 'Hackathon Winner', color: 'var(--secondary)' },
     category: ['All', 'Hackathon', 'Full Stack']
@@ -77,7 +76,7 @@ const projects: Project[] = [
     year: '2026',
     name: 'Studio JSON Schema',
     subtitle: 'SCHEMA ORGANIZATION ARCHITECTURE',
-    description: 'Open source contribution focused on JSON schema organization. Designed architectural improvements and tooling suggestions for managing complex, nested schema definitions efficiently.',
+    description: 'Open source contribution focused on JSON schema organization. Designed architectural improvements for managing complex definitions.',
     tags: ['JSON Schema', 'Open Source', 'Architecture'],
     badge: { text: 'Open Source', color: 'var(--highlight)' },
     category: ['All', 'Open Source']
@@ -135,25 +134,16 @@ export function Work() {
   const [filter, setFilter] = useState<FilterType>('All');
   const navigate = useNavigate();
 
-  const resetScrollPosition = () => {
-    const root = document.documentElement;
-    const previousScrollBehavior = root.style.scrollBehavior;
-    root.style.scrollBehavior = 'auto';
-    window.scrollTo(0, 0);
-    root.scrollTop = 0;
-    document.body.scrollTop = 0;
-    root.style.scrollBehavior = previousScrollBehavior;
-  };
-
   const filteredProjects = projects.filter((p) => p.category.includes(filter));
   const featuredProjects = filteredProjects.filter((p) => p.isFeatured);
   const archiveProjects = filteredProjects.filter((p) => !p.isFeatured);
 
-  const handleProjectClick = (projectId: string) => {
+  const handleProjectClick = (project: Project) => {
+    trackEvent('project_view', { id: project.id, name: project.name });
     // Only navigate for projects that have case studies (01, 04, 05, 09)
-    if (['01', '04', '05', '09'].includes(projectId)) {
-      resetScrollPosition();
-      navigate(`/project/${projectId}`);
+    if (['01', '04', '05', '09'].includes(project.id)) {
+      window.scrollTo(0, 0);
+      navigate(`/project/${project.id}`);
     }
   };
 
@@ -199,7 +189,7 @@ export function Work() {
               <FeaturedCard 
                 key={project.id} 
                 project={project} 
-                onClick={() => handleProjectClick(project.id)}
+                onClick={() => handleProjectClick(project)}
               />
             ))}
           </div>
@@ -223,7 +213,7 @@ export function Work() {
                 <div 
                   key={project.id} 
                   className={`grid grid-cols-1 md:grid-cols-[80px_2fr_1fr_2fr] gap-2 md:gap-4 px-6 py-6 border-b border-[var(--border)] hover:bg-[rgba(255,255,255,0.02)] transition-colors group ${['01', '04', '05', '09'].includes(project.id) ? 'cursor-pointer' : 'cursor-default'}`}
-                  onClick={() => handleProjectClick(project.id)}
+                  onClick={() => handleProjectClick(project)}
                 >
                   <div className="text-[12px] font-mono text-[var(--text-secondary)] md:py-1">
                     {project.year}
@@ -310,3 +300,4 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
     </div>
   );
 }
+
