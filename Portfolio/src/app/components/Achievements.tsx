@@ -17,6 +17,7 @@ function InfiniteMarquee({ items, speed = 40, direction = 'left', onCardClick }:
         animate={{
           x: direction === 'left' ? [0, -100/3 + '%'] : [-100/3 + '%', 0],
         }}
+        style={{ willChange: 'transform' }}
         transition={{
           duration: speed,
           repeat: Infinity,
@@ -35,10 +36,9 @@ function InfiniteMarquee({ items, speed = 40, direction = 'left', onCardClick }:
               flexShrink: 0,
               borderRadius: '20px',
               overflow: 'hidden',
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              boxShadow: `0 15px 30px rgba(0,0,0,0.3)`
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: `0 10px 20px rgba(0,0,0,0.2)`
             }}
           >
             <img

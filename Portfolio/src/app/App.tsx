@@ -17,10 +17,14 @@ function resetScrollPosition() {
 }
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useLayoutEffect(() => {
-    requestAnimationFrame(resetScrollPosition);
-  }, [pathname]);
+    const shouldReturnToWork = sessionStorage.getItem('return_to_work');
+    // Skip scroll-to-top if we're navigating to a section or returning from a project
+    if (!hash && !shouldReturnToWork) {
+      requestAnimationFrame(resetScrollPosition);
+    }
+  }, [pathname, hash]);
   return null;
 }
 

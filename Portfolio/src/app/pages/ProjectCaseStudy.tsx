@@ -153,6 +153,48 @@ private Token nextToken() {
     if (c == '"') return parseString();
     return parseNumber();
 }`
+  },
+  'nextlevel': {
+    name: 'NextLevel',
+    subtitle: 'AI-FIRST KNOWLEDGE OS',
+    year: '2026',
+    description: 'Next-generation knowledge management platform that turns raw information into a semantic "brain" using vector search and AI orchestration.',
+    tags: ['Next.js 15', 'Gemini 2.0', 'Inngest', 'MongoDB Vector Search'],
+    overview: 'NextLevel is a high-performance platform designed to consolidate digital life into an intelligent vault. It uses AI orchestration and durable background processing to automate knowledge extraction from links, notes, and documents.',
+    problem: 'Fragmented digital knowledge and the inability to search through notes by meaning rather than just keywords.',
+    solution: 'Built a semantic search engine using MongoDB Atlas Vector Search and Gemini embeddings, orchestrated by Inngest for reliable background processing.',
+    architecture: [
+      'Next.js 15 App Router provides a low-latency, streaming UI experience.',
+      'Inngest manages complex, long-running AI workflows with automatic retries.',
+      'Google Gemini 2.0 Flash handles instant summarization and urgency detection.',
+      'MongoDB Atlas Vector Search enables cosine-similarity based semantic retrieval.'
+    ],
+    highlights: [
+      { icon: Zap, title: 'Semantic Brain', desc: 'Search by intent and meaning using high-dimensional vector embeddings.' },
+      { icon: Cpu, title: 'Durable Workflows', desc: 'Event-driven orchestration with Inngest for fault-tolerant AI processing.' },
+      { icon: Database, title: 'AI-Enhanced Vault', desc: 'Automatic link scraping, summarization, and importance flagging.' }
+    ],
+    techStack: [
+      { label: 'Frontend', tech: 'Next.js 15, Framer Motion' },
+      { label: 'AI Engine', tech: 'Gemini 2.0 Flash' },
+      { label: 'Orchestration', tech: 'Inngest Architecture' },
+      { label: 'Database', tech: 'MongoDB Atlas Vector Search' }
+    ],
+    links: {
+      github: 'https://github.com/Animesh-86/NextLevel'
+    },
+    codeSnippet: `// Example: Vector Search Aggregation
+const results = await db.collection("captures").aggregate([
+  {
+    $vectorSearch: {
+      index: "vector_index",
+      path: "embedding",
+      queryVector: await generateEmbedding(query),
+      numCandidates: 100,
+      limit: 10
+    }
+  }
+]).toArray();`
   }
 };
 
@@ -184,11 +226,8 @@ export default function ProjectCaseStudy() {
       <nav className="fixed top-0 left-0 w-full z-50 p-6 flex items-center justify-between bg-[#050507]/50 backdrop-blur-xl border-b border-white/5">
         <button 
           onClick={() => {
+            sessionStorage.setItem('return_to_work', 'true');
             navigate('/');
-            setTimeout(() => {
-              const workSection = document.getElementById('work');
-              if (workSection) workSection.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
           }}
           className="flex items-center gap-2 text-sm font-mono text-white/60 hover:text-white transition-colors group"
         >
