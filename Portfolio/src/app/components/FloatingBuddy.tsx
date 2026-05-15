@@ -97,8 +97,25 @@ export function FloatingBuddy() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    return () => observer.disconnect();
-  }, [isChatOpen]);
+
+    // Listen for contextual interjections from other components
+    const handleInterjection = (e: any) => {
+      const detailMessage = e.detail?.message;
+      if (detailMessage) {
+        setMessage(detailMessage);
+        setIsHovered(true);
+        // Automatically hide after 6 seconds
+        setTimeout(() => setIsHovered(false), 6000);
+      }
+    };
+
+    window.addEventListener('friday-interjection', handleInterjection);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('friday-interjection', handleInterjection);
+    };
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
