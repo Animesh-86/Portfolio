@@ -211,18 +211,21 @@ export function GitHubHeatmap({
                 </div>
               ) : (
                 <>
-                  <div className="overflow-x-auto pb-4 scrollbar-hide">
+                  <motion.div 
+                    className="overflow-x-auto pb-4 scrollbar-hide"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <div className="inline-grid grid-flow-col gap-[3px]">
                       {weeks.map((week, weekIndex) => (
                         <div key={`week-${weekIndex}`} className="grid grid-rows-7 gap-[3px]">
                           {week.map((day, dayIndex) => (
-                            <motion.div
+                            <div
                               key={`day-${weekIndex}-${dayIndex}`}
                               title={day.date ? `${day.date}: ${day.count} contributions` : 'No data'}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: (weekIndex * 7 + dayIndex) * 0.0005 }}
-                              className="w-[12px] h-[12px] rounded-[2px]"
+                              className="w-[12px] h-[12px] rounded-[2px] transition-all duration-300 hover:scale-125 hover:z-10"
                               style={{
                                 backgroundColor: day.date ? LEVEL_COLORS[Math.min(day.level, 4)] : 'transparent',
                                 border: day.date ? '1px solid rgba(255,255,255,0.02)' : 'none'
@@ -232,7 +235,7 @@ export function GitHubHeatmap({
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                   <div className="flex items-center justify-between mt-6 pt-6 border-t border-[var(--border)]">
                     <div className="flex items-center gap-2 text-[11px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
                       <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
