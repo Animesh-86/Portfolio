@@ -1,43 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
-
-interface Certificate {
-  id: string;
-  title: string;
-  category: string;
-  src: string;
-  accent: string;
-}
-
-const certificates: Certificate[] = [
-  { id: 'aws-1', title: 'AWS Academy Graduate', category: 'Cloud', src: '/certificates/aws-academy-cloud-foundations.png', accent: '#FF9900' },
-  { id: 'aws-2', title: 'AWS Foundations', category: 'Cloud', src: '/certificates/aws.png', accent: '#FF9900' },
-  { id: 'ibm-1', title: 'IBM AI SkillsBuild', category: 'AI & ML', src: '/certificates/ibm-ai-skillsbuild.png', accent: '#0F62FE' },
-  { id: 'ibm-2', title: 'AI Fundamentals', category: 'AI & ML', src: '/certificates/ai-fundamentals.png', accent: '#0F62FE' },
-  { id: 'sn-1', title: 'ServiceNow Micro-Cert', category: 'Enterprise', src: '/certificates/servicenow-micro.png', accent: '#00A699' },
-  { id: 'hr-1', title: 'HackerRank Java', category: 'Languages', src: '/certificates/hackerrank-java.png', accent: '#2EC866' },
-  { id: 'hr-2', title: 'HackerRank Python', category: 'Languages', src: '/certificates/hackerrank-python.png', accent: '#2EC866' },
-  { id: 'cs-1', title: 'Meta: HTML & CSS', category: 'Frontend', src: '/certificates/html-css-coursera.jpeg', accent: '#1F70C1' },
-  { id: 'cs-2', title: 'Meta: JavaScript', category: 'Frontend', src: '/certificates/javascript-coursera.jpeg', accent: '#1F70C1' },
-  { id: 'ud-1', title: 'Flutter Development', category: 'Mobile', src: '/certificates/udemy-flutter.jpg', accent: '#02569B' },
-  { id: 'ud-2', title: 'SQL Fundamentals', category: 'Databases', src: '/certificates/udemy-sql.jpg', accent: '#02569B' },
-  { id: 'lc-1', title: 'LeetCode 50 Days', category: 'DSA', src: '/certificates/leetcode-50days.png', accent: '#FFA726' },
-  { id: 'lc-2', title: 'LeetCode 100 Days', category: 'DSA', src: '/certificates/leetcode-100days.png', accent: '#FFA726' },
-  { id: 'lang-1', title: 'C Programming', category: 'Languages', src: '/certificates/c.png', accent: '#A8B9CC' },
-  { id: 'nw-1', title: 'NxtWave Training', category: 'Engineering', src: '/certificates/nxtwave.jpeg', accent: '#0066CC' }
-];
-
-const categoryNotes: Record<string, string> = {
-  Cloud: 'Cloud fundamentals and AWS training focused on building and deploying scalable systems.',
-  'AI & ML': 'AI and machine learning credentials covering applied concepts and practical tooling.',
-  Languages: 'Programming language certifications that reinforce core coding fluency and problem solving.',
-  Frontend: 'Frontend learning focused on layout, interaction, and production-ready web interfaces.',
-  Mobile: 'Mobile development training centered on cross-platform app building and delivery.',
-  Databases: 'Database fundamentals and SQL practice for working with structured data confidently.',
-  DSA: 'Data structures and algorithms practice to strengthen technical interview readiness.',
-  Enterprise: 'Enterprise platform training for real-world workflow and service implementations.',
-  Engineering: 'Engineering-focused training from hands-on program work and applied development practice.'
-};
+import { useNavigate } from 'react-router-dom';
+import { TextScramble } from './TextScramble';
+import { certificates, categoryNotes, Certificate } from '../data/certificates';
 
 function InfiniteMarquee({ items, speed = 40, direction = 'left', onCardClick }: any) {
   // Triple the items to ensure seamless loop even on ultra-wide screens
@@ -114,6 +79,7 @@ function InfiniteMarquee({ items, speed = 40, direction = 'left', onCardClick }:
 
 export function Achievements() {
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
+  const navigate = useNavigate();
 
   // Split certificates into two rows for a more dynamic look
   const row1 = certificates.slice(0, Math.ceil(certificates.length / 2));
@@ -149,9 +115,17 @@ export function Achievements() {
               Professional <span className="text-[var(--primary)]">Credentials</span> & Badges
             </h2>
           </div>
-          <p className="text-[var(--text-muted)] font-body max-w-sm leading-relaxed mb-4">
-            A continuous track record of professional growth, technical mastery, and industry-standard certifications.
-          </p>
+          <div className="flex flex-col items-start md:items-end gap-6">
+            <p className="text-[var(--text-muted)] font-body max-w-sm leading-relaxed text-left md:text-right">
+              A continuous track record of professional growth, technical mastery, and industry-standard certifications.
+            </p>
+            <button 
+              onClick={() => navigate('/certifications')}
+              className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono font-bold tracking-widest uppercase text-white hover:bg-white hover:text-black transition-all"
+            >
+              View All Certificates
+            </button>
+          </div>
         </div>
 
         {/* Marquee Rows - Now contained within the max-width layout */}
@@ -168,13 +142,6 @@ export function Achievements() {
             direction="right" 
             onCardClick={setSelectedCertificate} 
           />
-        </div>
-
-        <div className="mt-12">
-          <div className="text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse" />
-            Scroll horizontally or click to verify details
-          </div>
         </div>
       </div>
 
