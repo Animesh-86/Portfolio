@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useLayoutEffect } from 'react';
 import Home from './pages/Home';
 import ProjectCaseStudy from './pages/ProjectCaseStudy';
+import Certifications from './pages/Certifications';
 import { FloatingBuddy } from './components/FloatingBuddy';
 import { Toaster } from 'sonner';
 
@@ -41,6 +42,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/project/:id" element={<ProjectCaseStudy />} />
+        <Route path="/certifications" element={<Certifications />} />
       </Routes>
       <FloatingBuddy />
       <Toaster position="top-center" expand={false} richColors />
