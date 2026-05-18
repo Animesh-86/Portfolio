@@ -28,6 +28,14 @@ function ScrollToTop() {
   return null;
 }
 
+const getBasename = () => {
+  const path = window.location.pathname;
+  if (path.toLowerCase().startsWith('/portfolio')) {
+    return path.substring(0, 10);
+  }
+  return '/';
+};
+
 export default function App() {
   useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -41,7 +49,7 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename={getBasename()}>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
