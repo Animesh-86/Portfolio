@@ -226,7 +226,7 @@ export function Work() {
         </div>
 
         <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 relative z-10 gap-6">
-          <h2 className="text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+          <h2 className="text-4xl md:text-[48px] font-medium" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
             Projects I've Built
           </h2>
 
@@ -372,7 +372,7 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="flex flex-col justify-between p-8 rounded-2xl border border-[var(--border)] bg-[rgba(17,17,24,0.4)] backdrop-blur-sm hover:border-[var(--primary)] transition-all duration-300 group relative overflow-hidden h-full min-h-[360px] cursor-pointer"
+      className="flex flex-col justify-between p-6 md:p-8 rounded-2xl border border-[var(--border)] bg-[rgba(17,17,24,0.4)] backdrop-blur-sm hover:border-[var(--primary)] transition-all duration-300 group relative overflow-hidden h-full min-h-[360px] cursor-pointer"
     >
       {/* Project Image Background */}
       {project.image && (
@@ -397,7 +397,7 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
             <span className="text-[10px] font-mono text-[var(--secondary)] tracking-widest uppercase">
               {project.subtitle}
             </span>
-            <h3 className="text-[28px] font-medium font-display text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
+            <h3 className="text-2xl md:text-[28px] font-medium font-display text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
               {project.name}
             </h3>
           </div>

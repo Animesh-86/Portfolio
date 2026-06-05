@@ -261,7 +261,7 @@ export default function ProjectCaseStudy() {
       </nav>
 
       {/* Hero Section */}
-      <header className="pt-40 pb-20 px-8 max-w-6xl mx-auto space-y-8 relative z-10">
+      <header className="pt-32 sm:pt-40 pb-20 px-8 max-w-6xl mx-auto space-y-8 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -271,7 +271,7 @@ export default function ProjectCaseStudy() {
              <span className="px-3 py-1 text-[10px] font-mono rounded-full bg-white/5 border border-white/10 text-white/40 uppercase tracking-widest">{project.year}</span>
              <span className="px-3 py-1 text-[10px] font-mono rounded-full bg-[#6366F1]/10 border border-[#6366F1]/20 text-[#6366F1] uppercase tracking-widest">Featured Case Study</span>
           </div>
-          <h1 className="text-[64px] sm:text-[96px] font-display font-medium leading-[1] tracking-tight">
+          <h1 className="text-5xl sm:text-[96px] font-display font-medium leading-[1] tracking-tight">
             {project.name}
           </h1>
           <p className="text-2xl text-white/60 font-light max-w-3xl leading-relaxed">

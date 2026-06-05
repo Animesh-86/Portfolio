@@ -94,13 +94,13 @@ export function TechStack() {
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-4 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 relative z-10">
           {skillColumns.map((column, index) => (
             <div key={column.title} className="relative">
               {/* Vertical Border */}
               {index < skillColumns.length - 1 && (
                 <div
-                  className="absolute right-0 top-0 bottom-0 w-[1px]"
+                  className="hidden lg:block absolute right-0 top-0 bottom-0 w-[1px]"
                   style={{ background: 'var(--border)' }}
                 />
               )}

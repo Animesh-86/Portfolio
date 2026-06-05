@@ -45,13 +45,13 @@ export function About() {
           // About me
         </div>
 
-        <div className="grid grid-cols-[55%_45%] gap-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-16 relative z-10">
           {/* Left Column */}
           <div className="flex flex-col gap-8">
             {/* Pull Quote */}
             <div>
               <h2
-                className="text-[42px] font-medium leading-[1.05] mb-4"
+                className="text-3xl md:text-[42px] font-medium leading-[1.05] mb-4"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
                 I'm a student building systems.
@@ -94,7 +94,7 @@ export function About() {
           {/* Right Column - Stats Grid */}
           <div className="flex flex-col gap-4">
             {/* 2x2 Bento Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <StatCard
                 value="10+"
                 label="Certificates & Badges"

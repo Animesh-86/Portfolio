@@ -180,7 +180,7 @@ export function GitHubHeatmap({
           <div className="flex flex-col gap-12">
             <div>
               <h2
-                className="text-[48px] font-medium mb-4 leading-none"
+                className="text-4xl md:text-[48px] font-medium mb-4 leading-none"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
                 {title}
@@ -280,7 +280,7 @@ export function GitHubHeatmap({
                 </a>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                 <StatItem icon={<Star className="w-4 h-4" />} label="Total Stars" value={stats?.totalStars ?? 0} />
                 <StatItem icon={<Users className="w-4 h-4" />} label="Followers" value={stats?.followers ?? 0} />
                 <StatItem icon={<GitBranch className="w-4 h-4" />} label="Public Repos" value={stats?.publicRepos ?? 0} />

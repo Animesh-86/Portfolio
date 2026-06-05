@@ -50,7 +50,7 @@ export function Navbar() {
         </div>
 
         {/* Center: Nav Links */}
-        <div className="flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.label}
@@ -71,7 +71,7 @@ export function Navbar() {
         {/* Right: Open to Work + Download CV */}
         <div className="flex items-center gap-4">
           <div
-            className="flex items-center gap-2 px-3 py-1.5"
+            className="hidden md:flex items-center gap-2 px-3 py-1.5"
             style={{
               border: '1px solid rgba(0,255,100,0.2)',
               background: 'rgba(0,255,100,0.06)',
@@ -85,7 +85,7 @@ export function Navbar() {
           </div>
 
           <MagneticButton
-            href="/Animesh_Sharma_Resume.pdf"
+            href="/resume.pdf"
             onClick={() => trackEvent('resume_download_click', { location: 'navbar' })}
             className="px-4 py-2 text-[13px] font-medium transition-all hover:bg-[rgba(255,255,255,0.04)]"
             style={{

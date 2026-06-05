@@ -51,7 +51,7 @@ export default function Certifications() {
           <div className="text-[10px] mb-4 tracking-[0.3em] font-mono text-[var(--primary)] uppercase animate-in fade-in slide-in-from-bottom-2">
             // Technical Validation
           </div>
-          <h1 className="text-6xl sm:text-7xl font-display font-medium leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <h1 className="text-4xl sm:text-7xl font-display font-medium leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             Professional <span className="text-[var(--primary)]">Certifications & Badges</span>
           </h1>
           <p className="text-[var(--text-muted)] font-body max-w-2xl text-lg leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-700">
@@ -185,7 +185,7 @@ export default function Certifications() {
                   {selectedCert.category}
                 </div>
 
-                <h3 className="text-4xl lg:text-5xl font-display font-medium text-white mb-6 leading-tight">
+                <h3 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 leading-tight">
                   {selectedCert.title}
                 </h3>
 

@@ -32,7 +32,7 @@ export function Hero() {
   return (
     <section className="min-h-screen flex items-center pt-16" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8 w-full">
-        <div className="grid grid-cols-[55%_45%] gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 items-center">
           {/* Left Column */}
           <div className="flex flex-col gap-6">
             {/* Eyebrow */}
@@ -45,10 +45,10 @@ export function Hero() {
 
             {/* Name */}
             <div style={{ fontFamily: 'var(--font-display)' }}>
-              <h1 className="text-[96px] font-bold leading-[0.95]" style={{ color: 'var(--text-primary)' }}>
+              <h1 className="text-6xl md:text-[96px] font-bold leading-[0.95]" style={{ color: 'var(--text-primary)' }}>
                 Animesh
               </h1>
-              <h1 className="text-[96px] font-bold leading-[0.95]" style={{ color: 'var(--text-primary)' }}>
+              <h1 className="text-6xl md:text-[96px] font-bold leading-[0.95]" style={{ color: 'var(--text-primary)' }}>
                 Sharma<span style={{ color: 'var(--primary)' }}>.</span>
               </h1>
             </div>
@@ -80,7 +80,7 @@ export function Hero() {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-2">
               <MagneticButton
                 href="#work"
                 className="px-6 py-3 text-[14px] font-medium transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] group"
@@ -132,7 +132,7 @@ export function Hero() {
           </div>
 
           {/* Right Column - Pattern Reveal Card */}
-          <div className="relative h-[480px]">
+          <div className="relative h-[300px] md:h-[480px]">
             <div
               className="absolute inset-0 overflow-hidden"
               style={{
@@ -143,7 +143,7 @@ export function Hero() {
               }}
             >
               <PatternRevealGrid />
-              
+
               {/* Overlay Gradient for depth */}
               <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-var(--background) via-transparent to-transparent opacity-40" />
             </div>

@@ -32,7 +32,7 @@ export function PatternRevealGrid() {
   return (
     <div className="absolute inset-0 group overflow-hidden bg-[#010103]">
       {/* 1. Base Layer: Small Purple Dots (Higher Resolution Grid) */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.25]"
         style={{
           backgroundImage: `radial-gradient(circle at center, #6366f1 1px, transparent 0)`,
@@ -94,7 +94,7 @@ function SymbolRenderer({ symbol }: { symbol: any }) {
   }
 
   return (
-    <span 
+    <span
       // Changed from font-black tracking-tighter to font-bold tracking-widest
       // This prevents the letters from bleeding into each other on the dot matrix
       className="font-mono font-bold select-none tracking-[0.15em]"

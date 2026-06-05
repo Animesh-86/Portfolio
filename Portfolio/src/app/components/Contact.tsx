@@ -83,15 +83,14 @@ export function Contact() {
   return (
     <section id="contact" className="py-32" style={{ background: 'rgba(10, 10, 15, 0.72)' }}>
       <div className="max-w-[1440px] mx-auto px-8">
-        <div className="grid grid-cols-2 gap-0" style={{ borderTop: '1px solid var(--border)' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-[var(--border)]">
           {/* Left Half */}
           <div
-            className="p-16 flex flex-col justify-between"
-            style={{ borderRight: '1px solid var(--border)', minHeight: '500px' }}
+            className="p-8 md:p-16 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[var(--border)] min-h-[auto] md:min-h-[500px]"
           >
             <div>
               <h2
-                className="text-[56px] font-medium leading-[1.05] mb-6"
+                className="text-4xl md:text-[56px] font-medium leading-[1.05] mb-6"
                 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
               >
                 Let's build something that{' '}
@@ -130,8 +129,7 @@ export function Contact() {
           <div className="flex flex-col">
             <form
               onSubmit={handleSubmit}
-              className="p-12 flex flex-col gap-4"
-              style={{ borderBottom: '1px solid var(--border)' }}
+              className="p-8 md:p-12 flex flex-col gap-4 border-b border-[var(--border)]"
             >
               <div>
                 <div
@@ -148,7 +146,7 @@ export function Contact() {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   value={formData.name}
                   onChange={(event) => setFormData((current) => ({ ...current, name: event.target.value }))}

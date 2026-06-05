@@ -111,7 +111,7 @@ export function Achievements() {
 
         <div className="mb-20 relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <h2 className="text-[56px] font-medium font-display leading-tight text-white max-w-2xl">
+            <h2 className="text-4xl md:text-[56px] font-medium font-display leading-tight text-white max-w-2xl">
               Professional <span className="text-[var(--primary)]">Credentials</span> & Badges
             </h2>
           </div>
