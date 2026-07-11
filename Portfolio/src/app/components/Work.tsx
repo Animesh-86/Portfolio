@@ -64,13 +64,13 @@ const projects: Project[] = [
   {
     id: '05',
     year: '2025',
-    name: 'BiteBox POS System',
-    subtitle: 'COMMERCIAL POINT-OF-SALE',
-    description: 'A robust freelance POS system for retail. Handles multi-device synchronization, offline inventory management, and real-time sales reporting.',
-    tags: ['Flutter', 'Firebase', 'SQLite'],
+    name: 'BiteBox Ecosystem',
+    subtitle: 'MULTI-TENANT POS & ADMIN',
+    description: 'A robust freelance billing ecosystem consisting of a Flutter POS application and a Next.js Admin Web Panel for centralized cafe management.',
+    tags: ['Flutter', 'Next.js', 'Firebase', 'SQLite'],
     badge: { text: 'Freelance', color: 'var(--highlight)' },
-    category: ['All', 'Mobile', 'Freelance'],
-    github: 'https://github.com/Animesh-86/BiteBox',
+    category: ['All', 'Mobile', 'Full Stack', 'Freelance'],
+    github: 'https://github.com/Animesh-86/BiteBox-Cafe-Billing-App',
     image: '/projects/bitebox.png'
   },
   {
@@ -189,7 +189,7 @@ const PROJECT_TRIVIA: Record<string, string> = {
   '09': "This JSON parser was built from pure Java core—zero external dependencies!",
   'commitpulse': "CommitPulse builds an isometric city from your GitHub data. Every building is a day of work!",
   'travelloop': "TravelLoop uses real-time WebSockets to sync your travel budget across devices instantly.",
-  '05': "BiteBox is a production-ready POS system. I optimized it for sub-50ms cloud sync using Firebase!",
+  '05': "BiteBox is a full ecosystem! It includes an offline-first Flutter POS and a Next.js multi-tenant admin dashboard.",
   'studio-json': "Studio JSON resolves circular $ref chains in schemas—a major engineering hurdle I solved!",
   'datatrust': "DataTrust calculates data health scores by analyzing metadata lineage in real-time.",
   'expenzo': "Expenzo uses a custom weekly saving algorithm to help users hit their financial targets faster.",

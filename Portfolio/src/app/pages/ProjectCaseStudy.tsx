@@ -79,30 +79,30 @@ public void broadcastCode(@DestinationVariable String roomId, CodeChange change)
 }`
   },
   '05': { // BiteBox
-    name: 'BiteBox POS System',
-    subtitle: 'COMMERCIAL POINT-OF-SALE',
+    name: 'BiteBox Ecosystem',
+    subtitle: 'MULTI-TENANT POS & ADMIN',
     year: '2025',
-    description: 'Full-featured point-of-sale freelance project for retail businesses with inventory management.',
-    tags: ['Flutter', 'Firebase', 'SQLite'],
-    overview: 'A production-ready billing system for cafes featuring real-time analytics, multi-device synchronization, and thermal printing support.',
-    problem: 'Ensuring atomic invoice sequencing and real-time inventory sync across multiple devices in unreliable network environments.',
-    solution: 'A Cloud-Native Offline-First approach using SQLite for local persistence and Firebase for sub-50ms cloud synchronization.',
+    description: 'A robust billing and management ecosystem consisting of a Flutter POS application and a Next.js Admin Web Panel.',
+    tags: ['Flutter', 'Next.js', 'Firebase', 'SQLite'],
+    overview: 'A modern, multi-tenant billing ecosystem designed for cafes. It features an offline-first Flutter POS application for in-store operations and a Next.js Admin Panel for central management across multiple branches.',
+    problem: 'Managing complex cafe operations across multiple locations while ensuring reliable offline functionality and centralized role-based access control.',
+    solution: 'Developed a unified ecosystem with a Cloud-Native Offline-First POS (Flutter/SQLite) and a multi-tenant Admin Dashboard (Next.js) backed by Firebase.',
     architecture: [
-      'Drift ORM manages type-safe local SQLite transactions and migrations.',
-      'Firebase Realtime Database handles low-latency cart synchronization.',
-      'Atomic Invoice Counters via Firebase transactions prevent sequence gaps.',
-      'Custom ESC/POS service integrates direct Bluetooth thermal receipt printing.'
+      'Flutter POS handles offline-first operations using Drift ORM for SQLite.',
+      'Next.js Admin Panel provides centralized multi-tenant management and real-time analytics.',
+      'Firebase Firestore securely stores and syncs tenant-isolated data via strict Security Rules.',
+      'Direct Bluetooth thermal printing (ESC/POS) integration in the mobile client.'
     ],
     highlights: [
-      { icon: Zap, title: 'Sub-50ms Analytics', desc: 'Real-time revenue and trend tracking across devices.' },
-      { icon: ShieldCheck, title: 'Atomic Sync', desc: 'Conflict-free cart sharing using server-authoritative timestamps.' },
-      { icon: Database, title: 'Offline-First', desc: 'Full SQLite local data store with background cloud sync.' }
+      { icon: Zap, title: 'Multi-Tenant Admin', desc: 'Manage multiple cafe branches securely from a single Next.js dashboard.' },
+      { icon: ShieldCheck, title: 'Unified Ecosystem', desc: 'Seamlessly connects in-store Flutter terminals with cloud web analytics.' },
+      { icon: Database, title: 'Offline-First', desc: 'Full SQLite local data store ensuring operations without internet.' }
     ],
     techStack: [
-      { label: 'Mobile', tech: 'Flutter, Dart' },
-      { label: 'Database', tech: 'SQLite, Drift ORM' },
-      { label: 'Cloud', tech: 'Firebase (Auth, DB)' },
-      { label: 'Printing', tech: 'Bluetooth ESC/POS' }
+      { label: 'POS App', tech: 'Flutter, Riverpod, Drift' },
+      { label: 'Admin Web', tech: 'Next.js, Tailwind CSS' },
+      { label: 'Cloud & DB', tech: 'Firebase, Firestore' },
+      { label: 'Hardware', tech: 'Bluetooth ESC/POS' }
     ],
     links: {
       github: 'https://github.com/Animesh-86/BiteBox-Cafe-Billing-App'
