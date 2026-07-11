@@ -20,6 +20,7 @@ export const certificates: Certificate[] = [
   { id: 'oth-2', title: 'AWS', category: 'Other', src: '/certificates/Other/AWS.png', accent: '#FF9900' },
   { id: 'sn-1', title: 'Micro Certificate', category: 'ServiceNow', src: '/certificates/ServiceNow/micro certificate.png', accent: '#00A699' },
   { id: 'sn-2', title: 'Certified System Administrator', category: 'ServiceNow', src: '/certificates/ServiceNow/ServiceNow Certified System Administrator (CSA)_page-0001.jpg', accent: '#00A699' },
+  { id: 'sn-3', title: 'Certified Application Developer', category: 'ServiceNow', src: '/certificates/ServiceNow/ServiceNow Certified Application Developer (CAD).jpg', accent: '#00A699' },
   { id: 'ud-1', title: 'Flutter', category: 'Udemy', src: '/certificates/Udemy/flutter.jpg', accent: '#02569B' },
   { id: 'ud-2', title: 'SQL', category: 'Udemy', src: '/certificates/Udemy/sql.jpg', accent: '#02569B' },
 ];

@@ -70,7 +70,7 @@ export function About() {
                 className="text-[14px] font-light leading-[1.9]"
                 style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}
               >
-                I'm a B.Tech student at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Parul University</span> with a solid foundation in Java and Spring Boot. I've solved 600+ DSA problems across major platforms and enjoy building backend systems and scalable services.
+                I'm a B.Tech student at <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Parul University</span> with a solid foundation in Java and Spring Boot. I've solved 700+ DSA problems across major platforms and enjoy building backend systems and scalable services.
               </p>
 
               <div className="text-[14px] font-light leading-[1.9]" style={{ fontFamily: 'var(--font-body)', color: 'var(--text-secondary)' }}>
