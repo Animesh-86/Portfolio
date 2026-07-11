@@ -17,6 +17,7 @@ interface Project {
   isFeatured?: boolean;
   github: string;
   image?: string;
+  link?: string;
 }
 
 const projects: Project[] = [
@@ -44,7 +45,8 @@ const projects: Project[] = [
     category: ['All', 'Full Stack'],
     isFeatured: true,
     github: 'https://github.com/Animesh-86/NextLevel',
-    image: '/projects/nextlevel.png'
+    image: '/projects/nextlevel.png',
+    link: 'https://next-level-sigma-lyart.vercel.app/'
   },
   {
     id: '04',
@@ -312,7 +314,7 @@ export function Work() {
                         ))}
                       </div>
 
-                      <div className="flex items-center md:py-1">
+                      <div className="flex items-center md:py-1 gap-1">
                         <a 
                           href={project.github}
                           target="_blank"
@@ -322,6 +324,17 @@ export function Work() {
                         >
                           <Github size={16} />
                         </a>
+                        {project.link && (
+                          <a 
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[var(--text-muted)] hover:text-[var(--primary)] transition-colors p-1"
+                          >
+                            <ExternalLink size={16} />
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -411,6 +424,17 @@ function FeaturedCard({ project, onClick }: { project: Project; onClick: () => v
             >
               <Github size={16} />
             </a>
+            {project.link && (
+              <a 
+                href={project.link} 
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()} 
+                className="p-2 rounded-full bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.08)] transition-colors text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                <ExternalLink size={16} />
+              </a>
+            )}
           </div>
         </div>
         <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed mt-2">
