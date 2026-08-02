@@ -14,9 +14,11 @@ const QUICK_ACTIONS = [
   { label: 'Contact Me', icon: <Mail size={12} />, action: 'contact' },
 ];
 
+const RESUME_URL = '/resume.pdf';
+
 const BOT_RESPONSES: Record<string, string> = {
   default: "I'm Friday, Animesh's digital twin. Ask me about his tech stack, projects, or how to hire him!",
-  resume: "You can download Animesh's resume from the link in the footer, or I can fetch the latest version for you right now!",
+  resume: 'Opening Animesh\'s resume in a new tab.',
   work: "Animesh specializes in high-performance backends. Check out 'Axion'—it's a beast built with Kafka and Redis!",
   github: "He's super active on GitHub! He loves contributing to open source and building dev tools.",
   contact: "The best way to reach Animesh is via LinkedIn or Email. I've scrolled you down to the contact section!",
@@ -135,13 +137,17 @@ export function FloatingBuddy() {
 
   const handleAction = (action: string) => {
     const responses: Record<string, string> = {
-      resume: "I've highlighted the resume download for you! (Or I would if I had a direct link to the PDF handy!)",
+      resume: 'Opening the resume in a new tab.',
       work: "Scrolling you to the projects section. Check out Axion!",
       github: "His GitHub is a treasure trove of backend architecture experiments.",
       contact: "Let's get you in touch with Animesh.",
     };
 
     setChatHistory(prev => [...prev, { role: 'bot', text: responses[action] || BOT_RESPONSES[action] }]);
+
+    if (action === 'resume') {
+      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+    }
     
     if (['work', 'github', 'contact'].includes(action)) {
       document.getElementById(action)?.scrollIntoView({ behavior: 'smooth' });
